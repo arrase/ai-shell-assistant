@@ -1,5 +1,3 @@
-import toolset
-
 from langgraph.prebuilt import create_react_agent
 from langchain_google_vertexai import ChatVertexAI
 from langgraph.checkpoint.memory import InMemorySaver
@@ -9,10 +7,12 @@ from langchain_core.messages import AnyMessage
 from rich.console import Console
 from rich.markdown import Markdown
 
+import toolset
+
 
 class ChatAgent:
     def __init__(self, config):
-        self.console = Console()
+        self.__console = Console()
 
         llm = ChatVertexAI(
             model=config.get("MODEL", "name"),
@@ -44,8 +44,8 @@ class ChatAgent:
                             {"role": "user", "content": user_input}]},
                         config=config,
                     )
-                    self.console.print("\n")
-                    self.console.print(
+                    print("\n")
+                    self.__console.print(
                         Markdown(response.get("messages")[-1].content))
             except KeyboardInterrupt:
                 print("\nGoodbye!")
