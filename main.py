@@ -14,7 +14,7 @@ system_prompt = "You are an expert Linux system administrator and software devel
 
 
 llm = ChatVertexAI(
-    model=os.getenv("GOOGLE_MODEL"),
+    model=os.getenv("GOOGLE_MODEL", "gemini-2.5-flash-preview-04-17"),
     temperature=os.getenv("TEMPERATURE", 0),
     max_tokens=None,
     max_retries=2,
@@ -42,7 +42,7 @@ def main():
                     {"messages": [{"role": "user", "content": user_input},]},
                     {"configurable": {"thread_id": "1"}}
                 )
-                print(response.get("messages")[-1].content)
+                print("Bot: %s" % response.get("messages")[-1].content)
         except KeyboardInterrupt:
             print("\nGoodbye!")
             break
