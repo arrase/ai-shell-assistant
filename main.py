@@ -14,15 +14,16 @@ from rich.markdown import Markdown
 
 
 class ChatAgent:
-    def __init__(self, system_prompt, model_name, temperature, max_retries):
+    def __init__(self, system_prompt, config):
         self.console = Console()
         self.system_prompt = system_prompt
 
         llm = ChatVertexAI(
-            model=model_name,
-            temperature=temperature,
+            model=config.get("MODEL", "name"),
+            temperature=config.get("MODEL", "temperature", fallback=0.0),
             max_tokens=None,
-            max_retries=max_retries,
+            max_retries=config.get("MODEL", "max_retries", fallback=2),
+            project=config.get("VERTEX", "project"),
         )
 
         self.agent = create_react_agent(
@@ -58,7 +59,7 @@ class ChatAgent:
                 break
 
 
-def prompt(state: AgentState, config: RunnableConfig) -> list[AnyMessage]:
+def system_prompt(state: AgentState, config: RunnableConfig) -> list[AnyMessage]:
     language = config["configurable"].get("language")
 
     system_msg = f"""
@@ -78,20 +79,16 @@ def main():
     )
     args = parser.parse_args()
 
-    config = configparser.ConfigParser()
-    config.read(args.config)
+    agent_config = configparser.ConfigParser()
+    agent_config.read(args.config)
 
-    model_name = config.get("MODEL", "name")
-    temperature = float(config.get("MODEL", "temperature", fallback=0.0))
-    max_retries = 2
-
-    agent_config = {"configurable": {
+    prompt_config = {"configurable": {
         "thread_id": "1",
-        "language": config.get("PREFERENCES", "language"),
+        "language": agent_config.get("PREFERENCES", "language"),
     }}
 
-    chat_agent = ChatAgent(prompt, model_name, temperature, max_retries)
-    chat_agent.start_chat(agent_config)
+    chat_agent = ChatAgent(system_prompt=system_prompt, config=agent_config)
+    chat_agent.start_chat(prompt_config)
 
 
 if __name__ == "__main__":
