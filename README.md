@@ -9,6 +9,13 @@ This project provides an AI-powered shell assistant that can execute shell comma
 - Configurable language model with adjustable temperature and retries.
 - Rich text output using `rich` for better readability.
 
+# Develop
+
+```
+cd src
+python3 main.py --config ../config/config.ini
+```
+
 # To-Do List
 
 Planned features and improvements for this project.

@@ -1,5 +1,6 @@
 import argparse
 import configparser
+from pathlib import Path
 
 from agent import ChatAgent
 
@@ -9,8 +10,8 @@ def main():
     parser.add_argument(
         "--config",
         type=str,
-        default="config.ini",
-        help="Path to the configuration file (default: config.ini)",
+        default="%s/.config/ai-shell-assistant/config.ini" % Path.home(),
+        help="Path to the configuration file (default: ~/.config/ai-shell-assistant/config.ini)",
     )
     args = parser.parse_args()
 
