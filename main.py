@@ -4,6 +4,7 @@ import toolset
 
 from langgraph.prebuilt import create_react_agent
 from langchain_google_vertexai import ChatVertexAI
+from langgraph.checkpoint.memory import InMemorySaver
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -20,7 +21,11 @@ llm = ChatVertexAI(
 )
 
 agent = create_react_agent(
-    model=llm, tools=[toolset.ExecuteLinuxCommandTool()], prompt=system_prompt)
+    model=llm,
+    tools=[toolset.ExecuteLinuxCommandTool()],
+    prompt=system_prompt,
+    checkpointer=InMemorySaver(),
+)
 
 
 def main():
@@ -34,7 +39,9 @@ def main():
                 break
             if user_input:
                 response = agent.invoke(
-                    {"messages": [{"role": "user", "content": user_input},]},)
+                    {"messages": [{"role": "user", "content": user_input},]},
+                    {"configurable": {"thread_id": "1"}}
+                )
                 print(response.get("messages")[-1].content)
         except KeyboardInterrupt:
             print("\nGoodbye!")
