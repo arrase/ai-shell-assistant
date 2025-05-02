@@ -14,9 +14,8 @@ from rich.markdown import Markdown
 
 
 class ChatAgent:
-    def __init__(self, system_prompt, config):
+    def __init__(self, config):
         self.console = Console()
-        self.system_prompt = system_prompt
 
         llm = ChatVertexAI(
             model=config.get("MODEL", "name"),
@@ -26,10 +25,10 @@ class ChatAgent:
             project=config.get("VERTEX", "project"),
         )
 
-        self.agent = create_react_agent(
+        self.__agent = create_react_agent(
             model=llm,
             tools=[toolset.ExecuteLinuxCommandTool()],
-            prompt=self.system_prompt,
+            prompt=self.__system_prompt,
             checkpointer=InMemorySaver(),
         )
 
@@ -43,7 +42,7 @@ class ChatAgent:
                     print("Goodbye!")
                     break
                 if user_input:
-                    response = self.agent.invoke(
+                    response = self.__agent.invoke(
                         {"messages": [
                             {"role": "user", "content": user_input}]},
                         config=config,
@@ -58,15 +57,14 @@ class ChatAgent:
                 print(f"An unexpected error occurred: {e}")
                 break
 
+    def __system_prompt(self, state: AgentState, config: RunnableConfig) -> list[AnyMessage]:
+        language = config["configurable"].get("language")
 
-def system_prompt(state: AgentState, config: RunnableConfig) -> list[AnyMessage]:
-    language = config["configurable"].get("language")
-
-    system_msg = f"""
-    You are an expert Linux system administrator and software development assistant.
-    You must respond to the user in {language}.
-    """
-    return [{"role": "system", "content": system_msg}] + state["messages"]
+        system_msg = f"""
+        You are an expert Linux system administrator and software development assistant.
+        You must respond to the user in {language}.
+        """
+        return [{"role": "system", "content": system_msg}] + state["messages"]
 
 
 def main():
@@ -87,7 +85,7 @@ def main():
         "language": agent_config.get("PREFERENCES", "language"),
     }}
 
-    chat_agent = ChatAgent(system_prompt=system_prompt, config=agent_config)
+    chat_agent = ChatAgent(agent_config)
     chat_agent.start_chat(prompt_config)
 
 
