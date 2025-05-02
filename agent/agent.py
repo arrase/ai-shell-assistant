@@ -44,7 +44,7 @@ class ChatAgent:
                             {"role": "user", "content": user_input}]},
                         config=config,
                     )
-                    print("\n")
+                    self.__console.print("\n")
                     self.__console.print(
                         Markdown(response.get("messages")[-1].content))
             except KeyboardInterrupt:
