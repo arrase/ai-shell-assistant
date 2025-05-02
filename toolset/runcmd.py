@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class ShellCommand(BaseModel):
-    """Input schema for the Shell Command Execution tool."""
+    """Input schema for the Execute Shell Command Tool."""
     command: str = Field(..., description="The shell command to be executed.")
 
 
