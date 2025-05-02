@@ -12,8 +12,7 @@ logger = logging.getLogger(__name__)
 
 class LinuxCommandInput(BaseModel):
     """Input schema for the Linux Command Execution tool."""
-    command: str = Field(...,
-                         description="The Linux shell command to be executed.")
+    command: str = Field(..., description="The Linux shell command to be executed.")
 
 
 class ExecuteLinuxCommandTool(BaseTool):
@@ -26,9 +25,9 @@ class ExecuteLinuxCommandTool(BaseTool):
     name: str = "execute_linux_command"
     description: str = (
         "Executes a given Linux shell command and returns its standard output, standard error, and return code."
-        "Use this tool to interact with the underlying Linux operating system."
-        "Input must be a single string containing the command to execute."
-        "Example: 'ls -la /tmp'."
+        "Use this tool to interact with the underlying Linux operating system. "
+        "Input must be a single string containing the command to execute. "
+        "Example: 'ls -la /tmp'. "
         "WARNING: Executes commands with the privileges of the agent process. HIGH SECURITY RISK."
     )
     args_schema: Type[BaseModel] = LinuxCommandInput
@@ -47,31 +46,27 @@ class ExecuteLinuxCommandTool(BaseTool):
                 timeout=60
             )
 
-            output = f"Executing command: {command}\n"
-            output += f"Return Code: {process.returncode}\n"
-            if process.stdout:
-                output += f"--- Standard Output ---\n{process.stdout.strip()}\n"
-            else:
-                output += "--- Standard Output ---\n(No standard output)\n"
-
-            if process.stderr:
-                output += f"--- Standard Error ---\n{process.stderr.strip()}\n"
-            else:
-                output += "--- Standard Error ---\n(No standard error)\n"
+            output = [
+                f"Executing command: {command}",
+                f"Return Code: {process.returncode}",
+                "--- Standard Output ---",
+                process.stdout.strip() if process.stdout else "(No standard output)",
+                "--- Standard Error ---",
+                process.stderr.strip() if process.stderr else "(No standard error)"
+            ]
 
             logger.info(f"Command executed. Return Code: {process.returncode}")
-
-            return output.strip()
+            return "\n".join(output)
 
         except subprocess.TimeoutExpired:
-            logger.error(f"Command '{command}' timed out.")
-            return f"Error: Command '{command}' timed out after 60 seconds."
+            error_message = f"Error: Command '{command}' timed out after 60 seconds."
+            logger.error(error_message)
+            return error_message
         except Exception as e:
-            logger.error(
-                f"Error executing command '{command}': {e}", exc_info=True)
-            return f"Error executing command '{command}': {str(e)}"
+            error_message = f"Error executing command '{command}': {str(e)}"
+            logger.error(error_message, exc_info=True)
+            return error_message
 
     async def _arun(self, command: str, **kwargs: Any) -> str:
         """Asynchronous execution of the Linux command."""
-        loop = asyncio.get_event_loop()
-        return await loop.run_in_executor(None, self._run, command)
+        return await asyncio.to_thread(self._run, command)
