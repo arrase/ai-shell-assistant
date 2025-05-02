@@ -59,9 +59,10 @@ class ChatAgent:
 
     def __system_prompt(self, state: AgentState, config: RunnableConfig) -> list[AnyMessage]:
         language = config["configurable"].get("language")
+        so = config["configurable"].get("so")
 
         system_msg = f"""
-        You are an expert Linux system administrator and software development assistant.
+        You are an expert {so} system administrator and software development assistant.
         You must respond to the user in {language}.
         """
         return [{"role": "system", "content": system_msg}] + state["messages"]
@@ -83,6 +84,7 @@ def main():
     prompt_config = {"configurable": {
         "thread_id": "1",
         "language": agent_config.get("PREFERENCES", "language"),
+        "so": agent_config.get("PREFERENCES", "so"),
     }}
 
     chat_agent = ChatAgent(agent_config)
