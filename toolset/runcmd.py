@@ -10,31 +10,31 @@ logging.basicConfig(level=logging.ERROR)
 logger = logging.getLogger(__name__)
 
 
-class LinuxCommandInput(BaseModel):
-    """Input schema for the Linux Command Execution tool."""
-    command: str = Field(..., description="The Linux shell command to be executed.")
+class ShellCommand(BaseModel):
+    """Input schema for the Shell Command Execution tool."""
+    command: str = Field(..., description="The shell command to be executed.")
 
 
-class ExecuteLinuxCommandTool(BaseTool):
+class ExecuteShellCommandTool(BaseTool):
     """
-    Tool that executes a Linux shell command on the host system where the agent is running.
+    Tool that executes a shell command on the host system where the agent is running.
 
     *** CRITICAL SECURITY WARNING ***
     This tool allows arbitrary code execution on the host system.
     """
-    name: str = "execute_linux_command"
+    name: str = "execute_shell_command"
     description: str = (
-        "Executes a given Linux shell command and returns its standard output, standard error, and return code."
-        "Use this tool to interact with the underlying Linux operating system. "
-        "Input must be a single string containing the command to execute. "
-        "Example: 'ls -la /tmp'. "
+        "Executes a given shell command and returns its standard output, standard error, and return code."
+        "Use this tool to interact with the underlying operating system."
+        "Input must be a single string containing the command to execute."
+        "Example: 'ls -la /tmp'."
         "WARNING: Executes commands with the privileges of the agent process. HIGH SECURITY RISK."
     )
-    args_schema: Type[BaseModel] = LinuxCommandInput
+    args_schema: Type[BaseModel] = ShellCommand
 
     def _run(self, command: str, **kwargs: Any) -> str:
-        """Executes the Linux command."""
-        logger.info(f"Attempting to execute Linux command: {command}")
+        """Executes the shell command."""
+        logger.info(f"Attempting to execute shell command: {command}")
 
         try:
             process = subprocess.run(
@@ -68,5 +68,5 @@ class ExecuteLinuxCommandTool(BaseTool):
             return error_message
 
     async def _arun(self, command: str, **kwargs: Any) -> str:
-        """Asynchronous execution of the Linux command."""
+        """Asynchronous execution of the shell command."""
         return await asyncio.to_thread(self._run, command)

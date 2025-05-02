@@ -24,7 +24,7 @@ class ChatAgent:
 
         self.__agent = create_react_agent(
             model=llm,
-            tools=[toolset.ExecuteLinuxCommandTool()],
+            tools=[toolset.ExecuteShellCommandTool()],
             prompt=self.__system_prompt,
             checkpointer=InMemorySaver(),
         )

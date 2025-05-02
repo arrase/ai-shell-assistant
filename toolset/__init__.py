@@ -1,1 +1,1 @@
-from .runcmd import ExecuteLinuxCommandTool
+from .runcmd import ExecuteShellCommandTool
