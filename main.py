@@ -6,6 +6,9 @@ import toolset
 from langgraph.prebuilt import create_react_agent
 from langchain_google_vertexai import ChatVertexAI
 from langgraph.checkpoint.memory import InMemorySaver
+from langchain_core.runnables import RunnableConfig
+from langgraph.prebuilt.chat_agent_executor import AgentState
+from langchain_core.messages import AnyMessage
 from rich.console import Console
 from rich.markdown import Markdown
 
@@ -29,7 +32,7 @@ class ChatAgent:
             checkpointer=InMemorySaver(),
         )
 
-    def start_chat(self):
+    def start_chat(self, config):
         print("ChatBot initialized. Type 'quit', 'exit', or 'q' to end the conversation.")
 
         while True:
@@ -42,7 +45,7 @@ class ChatAgent:
                     response = self.agent.invoke(
                         {"messages": [
                             {"role": "user", "content": user_input}]},
-                        {"configurable": {"thread_id": "1"}},
+                        config=config,
                     )
                     self.console.print("\n")
                     self.console.print(
@@ -53,6 +56,16 @@ class ChatAgent:
             except Exception as e:
                 print(f"An unexpected error occurred: {e}")
                 break
+
+
+def prompt(state: AgentState, config: RunnableConfig) -> list[AnyMessage]:
+    language = config["configurable"].get("language")
+
+    system_msg = f"""
+    You are an expert Linux system administrator and software development assistant.
+    You must respond to the user in {language}.
+    """
+    return [{"role": "system", "content": system_msg}] + state["messages"]
 
 
 def main():
@@ -68,13 +81,17 @@ def main():
     config = configparser.ConfigParser()
     config.read(args.config)
 
-    system_prompt = "You are an expert Linux system administrator and software development assistant."
     model_name = config.get("MODEL", "name")
     temperature = float(config.get("MODEL", "temperature", fallback=0.0))
     max_retries = 2
 
-    chat_agent = ChatAgent(system_prompt, model_name, temperature, max_retries)
-    chat_agent.start_chat()
+    agent_config = {"configurable": {
+        "thread_id": "1",
+        "language": config.get("PREFERENCES", "language"),
+    }}
+
+    chat_agent = ChatAgent(prompt, model_name, temperature, max_retries)
+    chat_agent.start_chat(agent_config)
 
 
 if __name__ == "__main__":
