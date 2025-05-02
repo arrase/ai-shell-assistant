@@ -1,4 +1,5 @@
-import os
+import argparse
+import configparser
 
 import toolset
 
@@ -7,7 +8,6 @@ from langchain_google_vertexai import ChatVertexAI
 from langgraph.checkpoint.memory import InMemorySaver
 from rich.console import Console
 from rich.markdown import Markdown
-from dotenv import load_dotenv
 
 
 class ChatAgent:
@@ -56,11 +56,21 @@ class ChatAgent:
 
 
 def main():
-    load_dotenv()
+    parser = argparse.ArgumentParser(description="Chat Agent Configuration")
+    parser.add_argument(
+        "--config",
+        type=str,
+        default="config.ini",
+        help="Path to the configuration file (default: ./config.ini)",
+    )
+    args = parser.parse_args()
+
+    config = configparser.ConfigParser()
+    config.read(args.config)
 
     system_prompt = "You are an expert Linux system administrator and software development assistant."
-    model_name = os.getenv("GOOGLE_MODEL", "gemini-2.5-flash-preview-04-17")
-    temperature = float(os.getenv("TEMPERATURE", 0))
+    model_name = config.get("MODEL", "name")
+    temperature = float(config.get("MODEL", "temperature", fallback=0.0))
     max_retries = 2
 
     chat_agent = ChatAgent(system_prompt, model_name, temperature, max_retries)

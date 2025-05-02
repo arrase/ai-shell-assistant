@@ -1,4 +1,3 @@
 langgraph
 langchain-google-vertexai
-python-dotenv
 rich
