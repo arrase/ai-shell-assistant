@@ -61,7 +61,7 @@ def main():
         "--config",
         type=str,
         default="config.ini",
-        help="Path to the configuration file (default: ./config.ini)",
+        help="Path to the configuration file (default: config.ini)",
     )
     args = parser.parse_args()
 
