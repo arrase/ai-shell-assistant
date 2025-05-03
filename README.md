@@ -33,7 +33,7 @@ prompt: |
 #### Explanation of Fields
 
 - **shortcut**: The name of the shortcut. This is the identifier you will use to invoke the shortcut.
-- **prompt**: The instructions for the assistant. You can include placeholders like `{REPLACE}` to dynamically insert values when the shortcut is used.
+- **prompt**: The instructions for the assistant. You can include a `{REPLACE}` placeholder to dynamically insert values when the shortcut is used.
 
 #### Example Usage
 
