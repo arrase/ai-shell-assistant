@@ -9,13 +9,13 @@ This project provides an AI-powered shell assistant that can execute shell comma
 - Configurable language model with adjustable temperature and retries.
 - Rich text output using `rich` for better readability.
 
-# Shortcuts
+## Shortcuts
 
-## How Shortcuts Work
+### How Shortcuts Work
 
 Shortcuts allow users to define custom commands that the AI Shell Assistant can execute. These shortcuts are configured in a YAML file located in the `config/shortcuts` directory. Each shortcut consists of a name and a corresponding prompt that specifies the behavior of the assistant.
 
-### Creating Your Own Shortcuts
+#### Creating Your Own Shortcuts
 
 To create a custom shortcut, follow these steps:
 
@@ -30,12 +30,12 @@ prompt: |
     If there is an error in the command output, explain how to fix it.
 ```
 
-### Explanation of Fields
+#### Explanation of Fields
 
 - **shortcut**: The name of the shortcut. This is the identifier you will use to invoke the shortcut.
 - **prompt**: The instructions for the assistant. You can include placeholders like `{REPLACE}` to dynamically insert values when the shortcut is used.
 
-### Example Usage
+#### Example Usage
 
 Using the example above, if the user inputs a command like `@debug ls -l`, the assistant will receive the following prompt:
 
