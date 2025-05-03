@@ -21,7 +21,7 @@ python3 main.py --config ../config/config.ini
 Planned features and improvements for this project.
 
 - [ ] **Implement Web Search Capability:** Integrate functionality allowing the agent to perform searches on the web to retrieve current information, supplementing its internal knowledge base. This will enhance the agent's ability to answer questions about recent events, find definitions, look up documentation, and access other online resources.
-- [ ] **Develop Special Command Shortcuts (e.g., `debug> command`):** Introduce a mechanism for users to invoke specific, predefined actions or modes via special syntax. A key example is the `debug> command` pattern, which should:
+- [x] **Develop Special Command Shortcuts (e.g., `debug> command`):** Introduce a mechanism for users to invoke specific, predefined actions or modes via special syntax. A key example is the `debug> command` pattern, which should:
     - Execute the specified command 
     - Capture the standard output and error streams from the command execution.
     - Analyze the captured output, providing a clear explanation of its meaning.

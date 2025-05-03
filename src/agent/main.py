@@ -7,11 +7,11 @@ from langchain_core.messages import AnyMessage
 from rich.console import Console
 from rich.markdown import Markdown
 
-import toolset
+from .shortcuts import Shortcuts
 
 
 class ChatAgent:
-    def __init__(self, config):
+    def __init__(self, config, tools):
         self.__console = Console()
 
         llm = ChatVertexAI(
@@ -24,13 +24,16 @@ class ChatAgent:
 
         self.__agent = create_react_agent(
             model=llm,
-            tools=[toolset.ExecuteShellCommandTool()],
+            tools=tools,
             prompt=self.__system_prompt,
             checkpointer=InMemorySaver(),
         )
 
-    def start_chat(self, config):
+    def start_chat(self, config, shortcuts):
         print("ChatBot initialized. Type 'quit', 'exit', or 'q' to end the conversation.")
+
+        # Load shortcuts
+        sh = Shortcuts(shortcuts)
 
         while True:
             try:
@@ -38,15 +41,20 @@ class ChatAgent:
                 if user_input.lower() in ["quit", "exit", "q"]:
                     print("Goodbye!")
                     break
-                if user_input:
-                    response = self.__agent.invoke(
-                        {"messages": [
-                            {"role": "user", "content": user_input}]},
-                        config=config,
-                    )
-                    self.__console.print("\n")
-                    self.__console.print(
-                        Markdown(response.get("messages")[-1].content))
+                # Replace user input with shortcut if it starts with '@'
+                if user_input.startswith("@"):
+                    prompt = sh.get_prompt(user_input)
+                    if prompt:
+                        user_input = prompt
+                # Call the agent with the user input
+                response = self.__agent.invoke(
+                    {"messages": [
+                        {"role": "user", "content": user_input}]},
+                    config=config,
+                )
+                self.__console.print("\n")
+                self.__console.print(
+                    Markdown(response.get("messages")[-1].content))
             except KeyboardInterrupt:
                 print("\nGoodbye!")
                 break

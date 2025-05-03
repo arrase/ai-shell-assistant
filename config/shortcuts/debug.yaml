@@ -1,0 +1,4 @@
+shortcut: debug
+prompt: |
+  Run the "{REPLACE}" command and explain its output in detail.
+  If there is an error in the command output, explain how to fix it.

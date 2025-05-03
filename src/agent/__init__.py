@@ -1,1 +1,1 @@
-from .agent import ChatAgent
+from .main import ChatAgent
