@@ -9,11 +9,48 @@ This project provides an AI-powered shell assistant that can execute shell comma
 - Configurable language model with adjustable temperature and retries.
 - Rich text output using `rich` for better readability.
 
+# Shortcuts
+
+## How Shortcuts Work
+
+Shortcuts allow users to define custom commands that the AI Shell Assistant can execute. These shortcuts are configured in a YAML file located in the `config/shortcuts` directory. Each shortcut consists of a name and a corresponding prompt that specifies the behavior of the assistant.
+
+### Creating Your Own Shortcuts
+
+To create a custom shortcut, follow these steps:
+
+1. Navigate to the `config/shortcuts` directory.
+2. Create a new YAML file with the desired shortcut configuration.
+3. Use the following format for the YAML file:
+
+```yaml
+shortcut: debug
+prompt: |
+    Run the "{REPLACE}" command and explain its output in detail.
+    If there is an error in the command output, explain how to fix it.
+```
+
+### Explanation of Fields
+
+- **shortcut**: The name of the shortcut. This is the identifier you will use to invoke the shortcut.
+- **prompt**: The instructions for the assistant. You can include placeholders like `{REPLACE}` to dynamically insert values when the shortcut is used.
+
+### Example Usage
+
+Using the example above, if the user inputs a command like `@debug ls -l`, the assistant will receive the following prompt:
+
+```
+Run the "ls -l" command and explain its output in detail.
+If there is an error in the command output, explain how to fix it.
+```
+
+By defining shortcuts, users can streamline repetitive tasks and customize the assistant's behavior to suit their specific needs.
+
 # Develop
 
 ```
 cd src
-python3 main.py --config ../config/config.ini
+python3 main.py --config ../config/config.ini --shortcuts ../config/shortcuts
 ```
 
 # To-Do List
@@ -21,12 +58,6 @@ python3 main.py --config ../config/config.ini
 Planned features and improvements for this project.
 
 - [ ] **Implement Web Search Capability:** Integrate functionality allowing the agent to perform searches on the web to retrieve current information, supplementing its internal knowledge base. This will enhance the agent's ability to answer questions about recent events, find definitions, look up documentation, and access other online resources.
-- [x] **Develop Special Command Shortcuts (e.g., `debug> command`):** Introduce a mechanism for users to invoke specific, predefined actions or modes via special syntax. A key example is the `debug> command` pattern, which should:
-    - Execute the specified command 
-    - Capture the standard output and error streams from the command execution.
-    - Analyze the captured output, providing a clear explanation of its meaning.
-    - Identify potential issues or errors indicated by the output.
-    - Suggest concrete solutions or troubleshooting steps for any identified problems.
 - [ ] **Add Persistent Long-Term Memory:** Implement a system for storing and retrieving information across different sessions or executions. This persistent memory should allow the agent to:
     - "Remember" specific facts, preferences, or instructions provided by the user in previous interactions.
     - Utilize this stored information to inform future responses and actions.

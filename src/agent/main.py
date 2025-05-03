@@ -29,11 +29,11 @@ class ChatAgent:
             checkpointer=InMemorySaver(),
         )
 
-    def start_chat(self, config, shortcuts):
+    def start_chat(self, config, shortcuts_dir):
         print("ChatBot initialized. Type 'quit', 'exit', or 'q' to end the conversation.")
 
         # Load shortcuts
-        sh = Shortcuts(shortcuts)
+        shc = Shortcuts(shortcuts_dir)
 
         while True:
             try:
@@ -43,7 +43,7 @@ class ChatAgent:
                     break
                 # Replace user input with shortcut if it starts with '@'
                 if user_input.startswith("@"):
-                    prompt = sh.get_prompt(user_input)
+                    prompt = shc.get_prompt(user_input)
                     if prompt:
                         user_input = prompt
                 # Call the agent with the user input
