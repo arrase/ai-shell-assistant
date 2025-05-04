@@ -24,17 +24,17 @@ class ExecuteShellCommandTool(BaseTool):
     """
     name: str = "execute_shell_command"
     description: str = (
-        "Executes a given shell command and returns its standard output, standard error, and return code."
-        "Use this tool to interact with the underlying operating system."
-        "Input must be a single string containing the command to execute."
-        "Example: 'ls -la /tmp'."
-        "The output is structured as follows:"
-        "1. A line indicating the executed command."
-        "2. A line showing the return code of the command."
-        "3. A section labeled '--- Standard Output ---' containing the command's standard output or '(No standard output)' if empty."
-        "4. A section labeled '--- Standard Error ---' containing the command's standard error or '(No standard error)' if empty."
-        "WARNING: Executes commands with the privileges of the agent process. HIGH SECURITY RISK."
+        "This tool executes a shell command on the host system and returns the results, including the command's output, error messages, and return code."
+        "Use this tool to interact with the operating system by providing a single string containing the command to execute."
+        "Input format: A single string representing the shell command (e.g., 'ls -la /tmp')."
+        "Output format: A structured response containing:"
+        "1. The executed command."
+        "2. The return code of the command."
+        "3. A section labeled '--- Standard Output ---' with the command's standard output or '(No standard output)' if empty."
+        "4. A section labeled '--- Standard Error ---' with the command's standard error or '(No standard error)' if empty."
+        "WARNING: This tool executes commands with the same privileges as the agent process, which poses a HIGH SECURITY RISK. Ensure commands are sanitized and safe before execution."
     )
+
     args_schema: Type[BaseModel] = ShellCommand
 
     def _run(self, command: str, **kwargs: Any) -> str:
