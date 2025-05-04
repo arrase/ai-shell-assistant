@@ -53,7 +53,7 @@ By defining shortcuts, users can streamline repetitive tasks and customize the a
 ```
 git clone git@github.com:arrase/ai-shell-assistant.git
 cd ai-shell-assistant
-python -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate
 pip3 install -r requirements.txt
 cd src
