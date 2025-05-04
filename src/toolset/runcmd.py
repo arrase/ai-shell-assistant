@@ -28,6 +28,11 @@ class ExecuteShellCommandTool(BaseTool):
         "Use this tool to interact with the underlying operating system."
         "Input must be a single string containing the command to execute."
         "Example: 'ls -la /tmp'."
+        "The output is structured as follows:"
+        "1. A line indicating the executed command."
+        "2. A line showing the return code of the command."
+        "3. A section labeled '--- Standard Output ---' containing the command's standard output or '(No standard output)' if empty."
+        "4. A section labeled '--- Standard Error ---' containing the command's standard error or '(No standard error)' if empty."
         "WARNING: Executes commands with the privileges of the agent process. HIGH SECURITY RISK."
     )
     args_schema: Type[BaseModel] = ShellCommand
