@@ -50,6 +50,8 @@ By defining shortcuts, users can streamline repetitive tasks and customize the a
 
 # Development
 
+You **must** have gcloud configured in your terminal and a project with access to the VertexAI API. Set the project name in the config/config.ini file.
+
 ```
 git clone git@github.com:arrase/ai-shell-assistant.git
 cd ai-shell-assistant
