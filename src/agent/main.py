@@ -30,10 +30,9 @@ class ChatAgent:
         )
 
     def start_chat(self, config, shortcuts_dir):
-        print("ChatBot initialized. Type 'quit', 'exit', or 'q' to end the conversation.")
-
         # Load shortcuts
         shc = Shortcuts(shortcuts_dir)
+        print("ChatBot initialized. Type 'quit', 'exit', or 'q' to end the conversation.")
 
         while True:
             try:
