@@ -1,19 +1,19 @@
 # AI Shell Assistant
 
-This project provides an AI-powered shell assistant that can execute shell commands and assist with software development tasks. It uses a conversational agent built with the `langgraph` and `langchain_google_vertexai` libraries.
+This project provides an AI-powered shell assistant capable of executing shell commands and assisting with software development tasks. It uses a conversational agent built with the `langgraph` and `langchain_google_vertexai` libraries.
 
 ## Features
 
 - Interactive chat interface.
 - Executes shell commands using a toolset.
 - Configurable language model with adjustable temperature and retries.
-- Rich text output using `rich` for better readability.
+- Enhanced text output using `rich` for improved readability.
 
 ## Shortcuts
 
 ### How Shortcuts Work
 
-Shortcuts allow users to define custom commands that the AI Shell Assistant can execute. These shortcuts are configured in a YAML file located in the `config/shortcuts` directory. Each shortcut consists of a yaml file with the name of the shortcut and a corresponding message that specifies the behavior of the agent.
+Shortcuts allow users to define custom commands that the AI Shell Assistant can execute. These shortcuts are configured in YAML files located in the `config/shortcuts` directory. Each shortcut consists of a YAML file with the name of the shortcut and a corresponding message that specifies the assistant's behavior.
 
 #### Creating Your Own Shortcuts
 
@@ -46,7 +46,7 @@ If there is an error in the command output, explain how to fix it.
 
 By defining shortcuts, users can streamline repetitive tasks and customize the assistant's behavior to suit their specific needs.
 
-# Develop
+# Development
 
 ```
 cd src
@@ -55,12 +55,11 @@ python3 main.py --config ../config/config.ini --shortcuts ../config/shortcuts
 
 # To-Do List
 
-Planned features and improvements for this project.
+Planned features and improvements for this project:
 
-- [ ] **Implement Web Search Capability:** Integrate functionality allowing the agent to perform searches on the web to retrieve current information, supplementing its internal knowledge base. This will enhance the agent's ability to answer questions about recent events, find definitions, look up documentation, and access other online resources.
-- [ ] **Add Persistent Long-Term Memory:** Implement a system for storing and retrieving information across different sessions or executions. This persistent memory should allow the agent to:
+- [ ] **Implement Web Search Capability:** Add functionality that allows the assistant to perform web searches to retrieve current information, supplementing its internal knowledge base. This will enhance the assistant's ability to answer questions about recent events, find definitions, look up documentation, and access other online resources.
+- [ ] **Add Persistent Long-Term Memory:** Develop a system for storing and retrieving information across different sessions or executions. This persistent memory should enable the assistant to:
     - "Remember" specific facts, preferences, or instructions provided by the user in previous interactions.
-    - Utilize this stored information to inform future responses and actions.
+    - Use this stored information to inform future responses and actions.
     - Support explicit user commands to add, modify, or recall items from memory (e.g., "remember that I prefer X", "what did I tell you about Y?").
-    The goal is to create a more personalized and context-aware user experience by enabling the agent to build a cumulative understanding over time.
-
+    The goal is to create a more personalized and context-aware user experience by enabling the assistant to build a cumulative understanding over time.
