@@ -58,8 +58,8 @@ cd ai-shell-assistant
 python3 -m venv .venv
 source .venv/bin/activate
 pip3 install -r requirements.txt
-cd src/ai_shell_assistant
-python3 cli.py --config ../../config/config.ini --shortcuts ../../config/shortcuts
+cd src
+python3 main.py --config ../config/config.ini --shortcuts ../config/shortcuts
 ```
 
 # To-Do List
