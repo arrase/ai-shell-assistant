@@ -5,7 +5,7 @@ This project provides an AI-powered shell assistant capable of executing shell c
 ## Features
 
 - Interactive chat interface.
-- Executes shell commands using a toolset.
+- Executes shell commands on the machine where the assistant is running.
 - Configurable language model with adjustable temperature and retries.
 - Enhanced text output using `rich` for improved readability.
 
