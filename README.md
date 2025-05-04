@@ -46,7 +46,7 @@ If there is an error in the command output, explain how to fix it.
 
 By defining shortcuts, users can streamline repetitive tasks and customize the assistant's behavior to suit their specific needs.
 
-![shortcut](./shortcut.png)
+![shortcut](./screenshots/shortcut.png)
 
 # Development
 
