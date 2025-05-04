@@ -13,7 +13,7 @@ This project provides an AI-powered shell assistant that can execute shell comma
 
 ### How Shortcuts Work
 
-Shortcuts allow users to define custom commands that the AI Shell Assistant can execute. These shortcuts are configured in a YAML file located in the `config/shortcuts` directory. Each shortcut consists of a name and a corresponding prompt that specifies the behavior of the assistant.
+Shortcuts allow users to define custom commands that the AI Shell Assistant can execute. These shortcuts are configured in a YAML file located in the `config/shortcuts` directory. Each shortcut consists of a yaml file with the name of the shortcut and a corresponding message that specifies the behavior of the agent.
 
 #### Creating Your Own Shortcuts
 
