@@ -51,6 +51,11 @@ By defining shortcuts, users can streamline repetitive tasks and customize the a
 # Development
 
 ```
+git clone git@github.com:arrase/ai-shell-assistant.git
+cd ai-shell-assistant
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
 cd src
 python3 main.py --config ../config/config.ini --shortcuts ../config/shortcuts
 ```
