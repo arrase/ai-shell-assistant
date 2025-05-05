@@ -21,5 +21,8 @@ dependencies = [
 [project.scripts]
 ai-shell-assistant = "ai_shell_assistant.main:main"
 
+[tool.setuptools]
+include-package-data = true
+
 [tool.setuptools.packages.find]
 where = ["src"]
