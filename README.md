@@ -62,6 +62,17 @@ cd src
 python3 main.py --config ../config/config.ini --shortcuts ../config/shortcuts
 ```
 
+# Build
+
+```
+git clone git@github.com:arrase/ai-shell-assistant.git
+cd ai-shell-assistant
+python3 -m venv .venv
+source .venv/bin/activate
+pip3 install build
+python3 -m build
+```
+
 # To-Do List
 
 Planned features and improvements for this project:
