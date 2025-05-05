@@ -2,8 +2,8 @@ import argparse
 import configparser
 from pathlib import Path
 
-from agent import ChatAgent
-from toolset import ExecuteShellCommandTool
+from .agent import ChatAgent
+from .toolset import ExecuteShellCommandTool
 
 
 def main():
