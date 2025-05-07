@@ -15,6 +15,9 @@ classifiers = [
 dependencies = [
     "langgraph",
     "langchain-google-vertexai",
+    "langchain-community",
+    "langchain-experimental",
+    "duckduckgo-search",
     "rich",
 ]
 
