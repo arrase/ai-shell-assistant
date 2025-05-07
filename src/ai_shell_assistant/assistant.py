@@ -32,7 +32,3 @@ def main():
 
     chat_agent = ChatAgent(agent_config)
     chat_agent.start_chat(prompt_config, args.shortcuts)
-
-
-if __name__ == "__main__":
-    main()
