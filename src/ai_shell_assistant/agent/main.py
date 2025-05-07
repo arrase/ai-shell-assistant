@@ -8,12 +8,14 @@ from langgraph.prebuilt.chat_agent_executor import AgentState
 from langchain_core.messages import AnyMessage
 from rich.console import Console
 from rich.markdown import Markdown
+from langchain_community.tools import ShellTool
+from langchain_community.tools import DuckDuckGoSearchRun
 
 from .shortcuts import Shortcuts
 
 
 class ChatAgent:
-    def __init__(self, config, tools):
+    def __init__(self, config):
         self.__console = Console()
 
         llm = ChatVertexAI(
@@ -26,7 +28,7 @@ class ChatAgent:
 
         self.__agent = create_react_agent(
             model=llm,
-            tools=tools,
+            tools=[ShellTool(), DuckDuckGoSearchRun()],
             prompt=self.__system_prompt,
             checkpointer=InMemorySaver(),
         )

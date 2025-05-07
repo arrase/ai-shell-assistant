@@ -8,6 +8,7 @@ This project provides an AI-powered shell assistant capable of executing shell c
 - Executes shell commands on the machine where the assistant is running.
 - Configurable language model with adjustable temperature and retries.
 - Enhanced text output using `rich` for improved readability.
+- Web browsing capability to fetch and include online information in responses.
 
 ## Shortcuts
 
@@ -77,7 +78,6 @@ python3 -m build
 
 Planned features and improvements for this project:
 
-- [ ] **Implement Web Search Capability:** Add functionality that allows the assistant to perform web searches to retrieve current information, supplementing its internal knowledge base. This will enhance the assistant's ability to answer questions about recent events, find definitions, look up documentation, and access other online resources.
 - [ ] **Add Persistent Long-Term Memory:** Develop a system for storing and retrieving information across different sessions or executions. This persistent memory should enable the assistant to:
     - "Remember" specific facts, preferences, or instructions provided by the user in previous interactions.
     - Use this stored information to inform future responses and actions.

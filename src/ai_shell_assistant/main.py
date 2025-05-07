@@ -3,7 +3,6 @@ import argparse
 import configparser
 
 from .agent import ChatAgent
-from .toolset import ExecuteShellCommandTool
 
 
 def main():
@@ -31,8 +30,7 @@ def main():
         "so": agent_config.get("PREFERENCES", "so"),
     }}
 
-    tools = [ExecuteShellCommandTool()]
-    chat_agent = ChatAgent(agent_config, tools)
+    chat_agent = ChatAgent(agent_config)
     chat_agent.start_chat(prompt_config, args.shortcuts)
 
 
