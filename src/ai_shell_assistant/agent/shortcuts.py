@@ -3,13 +3,14 @@ import yaml
 import re
 import logging
 
-logging.basicConfig(level=logging.INFO)
-
 
 class Shortcuts:
-    def __init__(self, directory_path: str):
+    def __init__(self, directory_path: str, logging_level="INFO"):
         self.__shortcuts = {}
         self._placeholder = "{REPLACE}"
+
+        logging.basicConfig(level=getattr(
+            logging, logging_level.upper(), logging.INFO))
 
         for filename in filter(lambda f: f.lower().endswith(('.yaml', '.yml')), os.listdir(directory_path)):
             file_path = os.path.join(directory_path, filename)

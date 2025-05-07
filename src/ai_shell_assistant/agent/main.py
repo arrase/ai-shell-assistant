@@ -1,4 +1,5 @@
 import readline  # Add edditline support for Unix-like systems
+import logging
 
 from langgraph.prebuilt import create_react_agent
 from langchain_google_vertexai import ChatVertexAI
@@ -15,8 +16,10 @@ from .shortcuts import Shortcuts
 
 
 class ChatAgent:
-    def __init__(self, config):
+    def __init__(self, config, logging_level="INFO"):
         self.__console = Console()
+
+        logging.basicConfig(level=getattr(logging, logging_level.upper(), logging.INFO))
 
         llm = ChatVertexAI(
             model=config.get("MODEL", "name"),
@@ -62,7 +65,7 @@ class ChatAgent:
                 print("\nGoodbye!")
                 break
             except Exception as e:
-                print(f"An unexpected error occurred: {e}")
+                logging.error(f"An unexpected error occurred: {e}")
                 break
 
     def __system_prompt(self, state: AgentState, config: RunnableConfig) -> list[AnyMessage]:

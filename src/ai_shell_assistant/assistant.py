@@ -35,6 +35,9 @@ def main():
     agent_config = configparser.ConfigParser()
     agent_config.read(args.config)
 
+    logging_level = agent_config.get("PREFERENCES", "logging_level", fallback="INFO").upper()
+    logging.basicConfig(level=getattr(logging, logging_level, logging.INFO))
+
     prompt_config = {
         "configurable": {
             "thread_id": "1",
@@ -43,5 +46,5 @@ def main():
         }
     }
 
-    chat_agent = ChatAgent(agent_config)
+    chat_agent = ChatAgent(agent_config, logging_level)
     chat_agent.start_chat(prompt_config, str(args.shortcuts))
