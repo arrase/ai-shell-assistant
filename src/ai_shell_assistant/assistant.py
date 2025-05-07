@@ -1,34 +1,47 @@
 import pathlib
 import argparse
 import configparser
+import logging
 
 from .agent import ChatAgent
+
+logging.basicConfig(level=logging.INFO)
 
 
 def main():
     parser = argparse.ArgumentParser(description="Chat Agent Configuration")
     parser.add_argument(
         "--config",
-        type=str,
-        default="%s/.config/ai-shell-assistant/config.ini" % pathlib.Path.home(),
+        type=pathlib.Path,
+        default=pathlib.Path.home() / ".config/ai-shell-assistant/config.ini",
         help="Path to the configuration file (default: ~/.config/ai-shell-assistant/config.ini)",
     )
     parser.add_argument(
         "--shortcuts",
-        type=str,
-        default="%s/.config/ai-shell-assistant/shortcuts" % pathlib.Path.home(),
+        type=pathlib.Path,
+        default=pathlib.Path.home() / ".config/ai-shell-assistant/shortcuts",
         help="Path to the shortcuts directory (default: ~/.config/ai-shell-assistant/shortcuts)",
     )
     args = parser.parse_args()
 
+    if not args.config.exists():
+        logging.error(f"Configuration file not found: {args.config}")
+        return
+
+    if not args.shortcuts.exists():
+        logging.error(f"Shortcuts directory not found: {args.shortcuts}")
+        return
+
     agent_config = configparser.ConfigParser()
     agent_config.read(args.config)
 
-    prompt_config = {"configurable": {
-        "thread_id": "1",
-        "language": agent_config.get("PREFERENCES", "language"),
-        "so": agent_config.get("PREFERENCES", "so"),
-    }}
+    prompt_config = {
+        "configurable": {
+            "thread_id": "1",
+            "language": agent_config.get("PREFERENCES", "language", fallback="english"),
+            "so": agent_config.get("PREFERENCES", "so", fallback="Linux"),
+        }
+    }
 
     chat_agent = ChatAgent(agent_config)
-    chat_agent.start_chat(prompt_config, args.shortcuts)
+    chat_agent.start_chat(prompt_config, str(args.shortcuts))
