@@ -19,7 +19,7 @@ dependencies = [
 ]
 
 [project.scripts]
-ai-shell-assistant = "ai_shell_assistant.main:main"
+ai-shell-assistant = "ai_shell_assistant.assistant:main"
 
 [tool.setuptools]
 include-package-data = true
