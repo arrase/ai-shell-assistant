@@ -5,8 +5,6 @@ import logging
 
 from .agent import ChatAgent
 
-logging.basicConfig(level=logging.INFO)
-
 
 def main():
     parser = argparse.ArgumentParser(description="Chat Agent Configuration")
