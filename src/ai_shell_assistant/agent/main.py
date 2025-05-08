@@ -19,7 +19,8 @@ class ChatAgent:
     def __init__(self, config, logging_level="INFO"):
         self.__console = Console()
 
-        logging.basicConfig(level=getattr(logging, logging_level.upper(), logging.INFO))
+        logging.basicConfig(level=getattr(
+            logging, logging_level.upper(), logging.INFO))
 
         llm = ChatVertexAI(
             model=config.get("MODEL", "name"),
@@ -72,8 +73,9 @@ class ChatAgent:
         language = config["configurable"].get("language")
         so = config["configurable"].get("so")
 
-        system_msg = f"""
-        You are an expert {so} system administrator and software development assistant.
-        You must respond to the user in {language}.
-        """
-        return [{"role": "system", "content": system_msg}] + state["messages"]
+        system_prompt = [
+            f"You are an expert {so} system administrator and software development assistant.",
+            f"You must respond to the user in {language}."
+        ]
+
+        return [{"role": "system", "content": "\n".join(system_prompt)}] + state["messages"]
