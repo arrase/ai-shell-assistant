@@ -1,11 +1,4 @@
 shortcut: debug
 prompt: |
   Run the "{REPLACE}" command.
-  Your task is to explain the *meaning and content* of the **actual standard output (stdout)** and **standard error (stderr)** produced by the command.
-  **Critically, ignore the contextual lines added by the script.** Do not mention or explain the lines containing:
-  - 'Executing command:'
-  - 'Return Code:'
-  - '--- Standard Output ---'
-  - '--- Standard Error ---'
-  Focus *exclusively* on explaining what the command itself printed to stdout and stderr (or the "(No standard output)" / "(No standard error)" messages if applicable).
   If there is an error in the command output, explain how to fix it.

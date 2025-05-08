@@ -70,8 +70,7 @@ git clone git@github.com:arrase/ai-shell-assistant.git
 cd ai-shell-assistant
 python3 -m venv .venv
 source .venv/bin/activate
-pip3 install build
-python3 -m build
+python setup.py sdist
 ```
 
 # To-Do List
