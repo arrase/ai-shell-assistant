@@ -20,9 +20,12 @@ class ChatAgent:
     def __init__(self, config, logging_level="INFO"):
         self.__console = Console()
 
-        logging.basicConfig(level=getattr(
-            logging, logging_level.upper(), logging.INFO))
+        # Configure logging
+        logging.basicConfig(
+            level=getattr(logging, logging_level.upper(), logging.INFO)
+        )
 
+        # Initialize the agent
         self.__agent = create_react_agent(
             model=self.__get_llm(config),
             tools=[ShellTool(), DuckDuckGoSearchRun()],
@@ -32,29 +35,34 @@ class ChatAgent:
 
     def start_chat(self, config, shortcuts_dir):
         # Load shortcuts
-        shc = Shortcuts(shortcuts_dir)
+        shortcuts = Shortcuts(shortcuts_dir)
         print("ChatBot initialized. Type 'quit', 'exit', or 'q' to end the conversation.")
 
         while True:
             try:
                 user_input = input("~> ").strip()
-                if user_input.lower() in ["quit", "exit", "q"]:
+
+                # Exit the chat
+                if user_input.lower() in {"quit", "exit", "q"}:
                     print("Goodbye!")
                     break
-                # Replace user input with shortcut if it starts with '@'
+
+                # Replace user input with a shortcut if it starts with '@'
                 if user_input.startswith("@"):
-                    prompt = shc.get_prompt(user_input)
+                    prompt = shortcuts.get_prompt(user_input)
                     if prompt:
                         user_input = prompt
-                # Call the agent with the user input
+
+                # Invoke the agent with the user's input
                 response = self.__agent.invoke(
-                    {"messages": [
-                        {"role": "user", "content": user_input}]},
+                    {"messages": [{"role": "user", "content": user_input}]},
                     config=config,
                 )
+
+                # Display the agent's response
                 self.__console.print("\n")
-                self.__console.print(
-                    Markdown(response.get("messages")[-1].content))
+                self.__console.print(Markdown(response.get("messages")[-1].content))
+
             except KeyboardInterrupt:
                 print("\nGoodbye!")
                 break
@@ -63,12 +71,15 @@ class ChatAgent:
                 break
 
     def __get_llm(self, config):
+        # Retrieve LLM configuration
         mode = config.get("PREFERENCES", "mode")
         print(f"Using LLM mode: {mode}")
-        model = config.get("MODEL", "name")
-        temperature = config.get("MODEL", "temperature", fallback=0.0)
-        max_retries = config.get("MODEL", "max_retries", fallback=2)
 
+        model = config.get("MODEL", "name")
+        temperature = config.getfloat("MODEL", "temperature", fallback=0.0)
+        max_retries = config.getint("MODEL", "max_retries", fallback=2)
+
+        # Initialize the appropriate LLM based on the mode
         if mode == "ollama":
             return ChatOllama(
                 model=model,
@@ -85,15 +96,20 @@ class ChatAgent:
                 project=config.get("VERTEX", "project"),
             )
         else:
-            raise ValueError("Unsupported LLM mode specified.")
+            # Handle unsupported LLM mode
+            logging.error(f"Error: Unsupported LLM mode specified: {mode}")
+            exit(1)  # Terminate the program
 
     def __system_prompt(self, state: AgentState, config: RunnableConfig) -> list[AnyMessage]:
-        language = config["configurable"].get("language")
-        so = config["configurable"].get("so")
+        # Retrieve language and system information from the configuration
+        language = config["configurable"].get("language", "English")
+        so = config["configurable"].get("so", "Linux")
 
+        # Build the system prompt
         system_prompt = [
             f"You are an expert {so} system administrator and software development assistant.",
             f"You must respond to the user in {language}."
         ]
 
+        # Return the system prompt along with the current state messages
         return [{"role": "system", "content": "\n".join(system_prompt)}] + state["messages"]

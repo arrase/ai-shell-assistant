@@ -39,7 +39,7 @@ def main():
     prompt_config = {
         "configurable": {
             "thread_id": "1",
-            "language": agent_config.get("PREFERENCES", "language", fallback="english"),
+            "language": agent_config.get("PREFERENCES", "language", fallback="English"),
             "so": agent_config.get("PREFERENCES", "so", fallback="Linux"),
         }
     }
