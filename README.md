@@ -100,7 +100,7 @@ python setup.py sdist
 [PREFERENCES]
 mode = ollama # Values can be vertex or ollama
 language = spanish
-so = Linux
+so = Linux # Tells the agent which operating system it is running on
 logging_level = WARNING
 
 [MODEL]
