@@ -93,4 +93,5 @@ Planned features and improvements for this project:
     - Use this stored information to inform future responses and actions.
     - Support explicit user commands to add, modify, or recall items from memory (e.g., "remember that I prefer X", "what did I tell you about Y?").
     The goal is to create a more personalized and context-aware user experience by enabling the assistant to build a cumulative understanding over time.
+- [ ] **Ollama support**: Local llm execution 
 - [ ] **Vision capabilities**: Take a screenshot and add it to the query context 
