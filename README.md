@@ -51,7 +51,7 @@ By defining shortcuts, users can streamline repetitive tasks and customize the a
 
 # Install
 
---> **Only models with tool-calling capabilities are supported by the assistant.** <--
+👉 **Only models with tool-calling capabilities are supported by the assistant.** 👈
 
 ## VertexAI
 
