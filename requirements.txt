@@ -3,4 +3,5 @@ langchain-google-vertexai
 langchain-community
 langchain-experimental
 duckduckgo-search
+langchain-ollama
 rich

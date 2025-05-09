@@ -3,7 +3,7 @@ import logging
 
 from langgraph.prebuilt import create_react_agent
 from langchain_google_vertexai import ChatVertexAI
-from langchain_community.chat_models import ChatOllama
+from langchain_ollama import ChatOllama
 from langgraph.checkpoint.memory import InMemorySaver
 from langchain_core.runnables import RunnableConfig
 from langgraph.prebuilt.chat_agent_executor import AgentState
