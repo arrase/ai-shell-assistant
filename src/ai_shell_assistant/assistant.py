@@ -7,20 +7,29 @@ from .agent import ChatAgent
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Chat Agent Configuration")
+    parser = argparse.ArgumentParser(description="AI Shell Assistant Configuration")
+
     parser.add_argument(
         "--config",
         type=pathlib.Path,
         default=pathlib.Path.home() / ".config/ai-shell-assistant/config.ini",
         help="Path to the configuration file (default: ~/.config/ai-shell-assistant/config.ini)",
     )
+
     parser.add_argument(
         "--shortcuts",
         type=pathlib.Path,
         default=pathlib.Path.home() / ".config/ai-shell-assistant/shortcuts",
         help="Path to the shortcuts directory (default: ~/.config/ai-shell-assistant/shortcuts)",
     )
+
     args = parser.parse_args()
+
+    agent_config = configparser.ConfigParser()
+    agent_config.read(args.config)
+
+    logging_level = agent_config.get("PREFERENCES", "logging_level", fallback="INFO").upper()
+    logging.basicConfig(level=getattr(logging, logging_level, logging.INFO))
 
     if not args.config.exists():
         logging.error(f"Configuration file not found: {args.config}")
@@ -29,12 +38,6 @@ def main():
     if not args.shortcuts.exists():
         logging.error(f"Shortcuts directory not found: {args.shortcuts}")
         return
-
-    agent_config = configparser.ConfigParser()
-    agent_config.read(args.config)
-
-    logging_level = agent_config.get("PREFERENCES", "logging_level", fallback="INFO").upper()
-    logging.basicConfig(level=getattr(logging, logging_level, logging.INFO))
 
     prompt_config = {
         "configurable": {
