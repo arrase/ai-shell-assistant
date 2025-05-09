@@ -94,6 +94,24 @@ source .venv/bin/activate
 python setup.py sdist
 ```
 
+# config.ini
+
+```
+[PREFERENCES]
+mode = ollama # Values can be vertex or ollama
+language = spanish
+so = Linux
+logging_level = WARNING
+
+[MODEL]
+name = llama3.2:1b # Only tool-calling models are supported
+temperature = 0.0
+max_retries = 2
+
+[VERTEX]
+project = <YOUR VERTEX PROJECT HERE>
+```
+
 # To-Do List
 
 Planned features and improvements for this project:
