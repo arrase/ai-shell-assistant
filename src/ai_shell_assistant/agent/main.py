@@ -64,6 +64,7 @@ class ChatAgent:
 
     def __get_llm(self, config):
         mode = config.get("PREFERENCES", "mode")
+        print(f"Using LLM mode: {mode}")
         model = config.get("MODEL", "name")
         temperature = config.get("MODEL", "temperature", fallback=0.0)
         max_retries = config.get("MODEL", "max_retries", fallback=2)
