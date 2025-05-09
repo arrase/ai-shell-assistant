@@ -1,5 +1,6 @@
 import readline  # Add edditline support for Unix-like systems
 import logging
+import sys
 
 from langgraph.prebuilt import create_react_agent
 from langchain_google_vertexai import ChatVertexAI
@@ -98,7 +99,7 @@ class ChatAgent:
         else:
             # Handle unsupported LLM mode
             logging.error(f"Error: Unsupported LLM mode specified: {mode}")
-            exit(1)  # Terminate the program
+            sys.exit(1)  # Terminate the program
 
     def __system_prompt(self, state: AgentState, config: RunnableConfig) -> list[AnyMessage]:
         # Retrieve language and system information from the configuration
