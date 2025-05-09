@@ -94,7 +94,7 @@ source .venv/bin/activate
 python setup.py sdist
 ```
 
-# config.ini
+## config.ini
 
 ```
 [PREFERENCES]
