@@ -57,7 +57,7 @@ You **must** have [gcloud sdk](https://cloud.google.com/sdk/docs/install?hl=es-4
 
 ## Ollama
 
-Ollama enables the use of local LLMs for tool-calling tasks. Only models with tool-calling capabilities are supported.
+[Ollama](https://ollama.com/) enables the use of local LLMs for tool-calling tasks. Only models with tool-calling capabilities are supported.
 
 ## Development
 
