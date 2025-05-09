@@ -49,21 +49,32 @@ By defining shortcuts, users can streamline repetitive tasks and customize the a
 
 ![shortcut](./screenshots/shortcut.png)
 
-# Development
+# Install
 
 You **must** have [gcloud sdk](https://cloud.google.com/sdk/docs/install?hl=es-419) configured in your terminal and a project with access to the VertexAI API. Set the project name in the config/config.ini file.
+
+## Development
 
 ```
 git clone git@github.com:arrase/ai-shell-assistant.git
 cd ai-shell-assistant
 python3 -m venv .venv
 source .venv/bin/activate
-pip3 install -r requirements.txt
-cd src
-python3 main.py --config ../config/config.ini --shortcuts ../config/shortcuts
+pip3 install -e .
+ai-shell-assistant --config config/config.ini --shortcuts config/shortcuts
 ```
 
-# Build
+## Install as system command
+
+```
+git clone git@github.com:arrase/ai-shell-assistant.git
+cd ai-shell-assistant
+pip3 install .
+cp -r config  ~/.config/ai-shell-assistant
+ai-shell-assistant
+```
+
+## Build
 
 ```
 git clone git@github.com:arrase/ai-shell-assistant.git
