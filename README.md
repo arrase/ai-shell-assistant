@@ -65,7 +65,7 @@ You **must** have [gcloud sdk](https://cloud.google.com/sdk/docs/install?hl=es-4
 
 ## Development
 
-```
+```bash
 git clone git@github.com:arrase/ai-shell-assistant.git
 cd ai-shell-assistant
 python3 -m venv .venv
@@ -76,7 +76,7 @@ ai-shell-assistant --config config/config.ini --shortcuts config/shortcuts
 
 ## Install as system command
 
-```
+```bash
 git clone git@github.com:arrase/ai-shell-assistant.git
 cd ai-shell-assistant
 pip3 install .
@@ -86,7 +86,7 @@ ai-shell-assistant
 
 ## Build
 
-```
+```bash
 git clone git@github.com:arrase/ai-shell-assistant.git
 cd ai-shell-assistant
 python3 -m venv .venv
@@ -96,7 +96,7 @@ python setup.py sdist
 
 ## config.ini
 
-```
+```ini
 [PREFERENCES]
 mode = ollama # Values can be vertex or ollama
 language = spanish
