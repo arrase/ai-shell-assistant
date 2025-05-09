@@ -51,13 +51,15 @@ By defining shortcuts, users can streamline repetitive tasks and customize the a
 
 # Install
 
+**Only models with tool-calling capabilities are supported by the assistant.**
+
 ## VertexAI
 
 You **must** have [gcloud sdk](https://cloud.google.com/sdk/docs/install?hl=es-419) configured in your terminal and a project with access to the VertexAI API. Set the project name in the config/config.ini file.
 
 ## Ollama
 
-[Ollama](https://ollama.com/) enables the use of local LLMs for tool-calling tasks. Only models with tool-calling capabilities are supported.
+[Ollama](https://ollama.com/) enables the use of local LLMs for tool-calling tasks. 
 
 ## Development
 
