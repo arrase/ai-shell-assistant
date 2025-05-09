@@ -3,6 +3,7 @@ import logging
 
 from langgraph.prebuilt import create_react_agent
 from langchain_google_vertexai import ChatVertexAI
+from langchain_community.chat_models import ChatOllama
 from langgraph.checkpoint.memory import InMemorySaver
 from langchain_core.runnables import RunnableConfig
 from langgraph.prebuilt.chat_agent_executor import AgentState
@@ -22,16 +23,8 @@ class ChatAgent:
         logging.basicConfig(level=getattr(
             logging, logging_level.upper(), logging.INFO))
 
-        llm = ChatVertexAI(
-            model=config.get("MODEL", "name"),
-            temperature=config.get("MODEL", "temperature", fallback=0.0),
-            max_tokens=None,
-            max_retries=config.get("MODEL", "max_retries", fallback=2),
-            project=config.get("VERTEX", "project"),
-        )
-
         self.__agent = create_react_agent(
-            model=llm,
+            model=self.__get_llm(config),
             tools=[ShellTool(), DuckDuckGoSearchRun()],
             prompt=self.__system_prompt,
             checkpointer=InMemorySaver(),
@@ -68,6 +61,30 @@ class ChatAgent:
             except Exception as e:
                 logging.error(f"An unexpected error occurred: {e}")
                 break
+
+    def __get_llm(self, config):
+        mode = config.get("PREFERENCES", "mode")
+        model = config.get("MODEL", "name")
+        temperature = config.get("MODEL", "temperature", fallback=0.0)
+        max_retries = config.get("MODEL", "max_retries", fallback=2)
+
+        if mode == "ollama":
+            return ChatOllama(
+                model=model,
+                temperature=temperature,
+                max_tokens=None,
+                max_retries=max_retries,
+            )
+        elif mode == "vertex":
+            return ChatVertexAI(
+                model=model,
+                temperature=temperature,
+                max_tokens=None,
+                max_retries=max_retries,
+                project=config.get("VERTEX", "project"),
+            )
+        else:
+            raise ValueError("Unsupported LLM mode specified.")
 
     def __system_prompt(self, state: AgentState, config: RunnableConfig) -> list[AnyMessage]:
         language = config["configurable"].get("language")
