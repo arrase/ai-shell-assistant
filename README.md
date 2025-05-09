@@ -1,6 +1,6 @@
 # AI Shell Assistant
 
-This project provides an AI-powered shell assistant capable of executing shell commands and assisting with software development tasks. It uses a conversational agent built with the `langgraph` and `langchain_google_vertexai` libraries.
+This project provides an AI-powered shell assistant capable of executing shell commands and assisting with software development tasks. It uses a conversational agent built with the `langgraph` libraries.
 
 ## Features
 
