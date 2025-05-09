@@ -59,7 +59,7 @@ You **must** have [gcloud sdk](https://cloud.google.com/sdk/docs/install?hl=es-4
 
 ## Ollama
 
-[Ollama](https://ollama.com/) enables the use of local LLMs for tool-calling tasks. 
+[Ollama](https://ollama.com/) enables the use of local LLMs. 
 
 ## Development
 
