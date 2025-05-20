@@ -41,17 +41,17 @@ class ChatAgent:
             user_input = prompt.strip()
             if user_input.startswith("@"):
                 resolved = shortcuts.get_prompt(user_input)
-                if resolved:
-                    user_input = resolved
+                user_input = resolved if resolved else user_input
             response = self.__agent.invoke(
                 {"messages": [{"role": "user", "content": user_input}]},
                 config=config,
             )
             self.__console.print("\n")
-            self.__console.print(Markdown(response.get("messages")[-1].content))
+            self.__console.print(
+                Markdown(response.get("messages")[-1].content))
             return
 
-        print("ChatBot initialized. Type 'quit', 'exit', or 'q' to end the conversation.")
+        print("ChatBot initialized. Type 'quit', 'exit' or 'q' to end the conversation.")
 
         while True:
             try:
@@ -65,8 +65,7 @@ class ChatAgent:
                 # Replace user input with a shortcut if it starts with '@'
                 if user_input.startswith("@"):
                     prompt = shortcuts.get_prompt(user_input)
-                    if prompt:
-                        user_input = prompt
+                    user_input = prompt if prompt else user_input
 
                 # Invoke the agent with the user's input
                 response = self.__agent.invoke(
@@ -76,7 +75,8 @@ class ChatAgent:
 
                 # Display the agent's response
                 self.__console.print("\n")
-                self.__console.print(Markdown(response.get("messages")[-1].content))
+                self.__console.print(
+                    Markdown(response.get("messages")[-1].content))
 
             except KeyboardInterrupt:
                 print("\nGoodbye!")
