@@ -13,19 +13,18 @@ def read_file_content(file_path):
         with open(file_path, "rb") as f:
             encoded = base64.b64encode(f.read()).decode("utf-8")
         return f"[IMAGE:{file_path.name}:{mime}:base64]{encoded}"
-    else:
-        try:
-            with open(file_path, "r", encoding="utf-8") as f:
-                return f"[FILE:{file_path.name}]\n{f.read()}"
-        except Exception:
-            return f"[FILE:{file_path.name}] <COULD NOT READ>"
+    try:
+        with open(file_path, "r", encoding="utf-8") as f:
+            return f"[FILE:{file_path.name}]\n{f.read()}"
+    except Exception:
+        return f"[FILE:{file_path.name}] <COULD NOT READ>"
 
 def read_dir_content(dir_path):
-    context = []
-    for path in dir_path.rglob("*"):
-        if path.is_file():
-            context.append(read_file_content(path))
-    return "\n\n".join(context)
+    return "\n\n".join(
+        read_file_content(path)
+        for path in dir_path.rglob("*")
+        if path.is_file()
+    )
 
 def main():
     parser = argparse.ArgumentParser(description="AI Shell Assistant Configuration")
@@ -106,8 +105,6 @@ def main():
 
     chat_agent = ChatAgent(agent_config, logging_level)
     if args.prompt:
-        # Run the agent with the provided prompt and exit
         chat_agent.start_chat(prompt_config, str(args.shortcuts), prompt=args.prompt)
     else:
-        # Default interactive mode
         chat_agent.start_chat(prompt_config, str(args.shortcuts))
