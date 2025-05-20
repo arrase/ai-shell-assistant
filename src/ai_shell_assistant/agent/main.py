@@ -34,9 +34,23 @@ class ChatAgent:
             checkpointer=InMemorySaver(),
         )
 
-    def start_chat(self, config, shortcuts_dir):
+    def start_chat(self, config, shortcuts_dir, prompt=None):
         # Load shortcuts
         shortcuts = Shortcuts(shortcuts_dir)
+        if prompt is not None:
+            user_input = prompt.strip()
+            if user_input.startswith("@"):
+                resolved = shortcuts.get_prompt(user_input)
+                if resolved:
+                    user_input = resolved
+            response = self.__agent.invoke(
+                {"messages": [{"role": "user", "content": user_input}]},
+                config=config,
+            )
+            self.__console.print("\n")
+            self.__console.print(Markdown(response.get("messages")[-1].content))
+            return
+
         print("ChatBot initialized. Type 'quit', 'exit', or 'q' to end the conversation.")
 
         while True:

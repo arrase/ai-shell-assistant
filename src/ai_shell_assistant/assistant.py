@@ -23,6 +23,13 @@ def main():
         help="Path to the shortcuts directory (default: ~/.config/ai-shell-assistant/shortcuts)",
     )
 
+    parser.add_argument(
+        "--prompt",
+        type=str,
+        default=None,
+        help="Prompt para ejecutar una consulta directa (no interactivo)",
+    )
+
     args = parser.parse_args()
 
     agent_config = configparser.ConfigParser()
@@ -48,4 +55,9 @@ def main():
     }
 
     chat_agent = ChatAgent(agent_config, logging_level)
-    chat_agent.start_chat(prompt_config, str(args.shortcuts))
+    if args.prompt:
+        # Ejecuta el agente con el prompt proporcionado y termina
+        chat_agent.start_chat(prompt_config, str(args.shortcuts), prompt=args.prompt)
+    else:
+        # Modo interactivo por defecto
+        chat_agent.start_chat(prompt_config, str(args.shortcuts))
