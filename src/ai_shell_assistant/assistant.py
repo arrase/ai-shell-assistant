@@ -2,9 +2,30 @@ import pathlib
 import argparse
 import configparser
 import logging
+import base64
+import mimetypes
 
 from .agent import ChatAgent
 
+def read_file_content(file_path):
+    mime, _ = mimetypes.guess_type(file_path)
+    if mime and mime.startswith("image/"):
+        with open(file_path, "rb") as f:
+            encoded = base64.b64encode(f.read()).decode("utf-8")
+        return f"[IMAGE:{file_path.name}:{mime}:base64]{encoded}"
+    else:
+        try:
+            with open(file_path, "r", encoding="utf-8") as f:
+                return f"[FILE:{file_path.name}]\n{f.read()}"
+        except Exception:
+            return f"[FILE:{file_path.name}] <COULD NOT READ>"
+
+def read_dir_content(dir_path):
+    context = []
+    for path in dir_path.rglob("*"):
+        if path.is_file():
+            context.append(read_file_content(path))
+    return "\n\n".join(context)
 
 def main():
     parser = argparse.ArgumentParser(description="AI Shell Assistant Configuration")
@@ -27,7 +48,21 @@ def main():
         "--prompt",
         type=str,
         default=None,
-        help="Prompt para ejecutar una consulta directa (no interactivo)",
+        help="Prompt to execute a direct query (non-interactive)",
+    )
+
+    parser.add_argument(
+        "--file",
+        type=pathlib.Path,
+        default=None,
+        help="File to load into the agent's context",
+    )
+
+    parser.add_argument(
+        "--dir",
+        type=pathlib.Path,
+        default=None,
+        help="Directory to recursively load into the agent's context",
     )
 
     args = parser.parse_args()
@@ -46,18 +81,33 @@ def main():
         logging.error(f"Shortcuts directory not found: {args.shortcuts}")
         return
 
+    extra_context = ""
+    if args.file:
+        if args.file.exists() and args.file.is_file():
+            extra_context = read_file_content(args.file)
+        else:
+            logging.error(f"File not found: {args.file}")
+            return
+    elif args.dir:
+        if args.dir.exists() and args.dir.is_dir():
+            extra_context = read_dir_content(args.dir)
+        else:
+            logging.error(f"Directory not found: {args.dir}")
+            return
+
     prompt_config = {
         "configurable": {
             "thread_id": "1",
             "language": agent_config.get("PREFERENCES", "language", fallback="English"),
             "so": agent_config.get("PREFERENCES", "so", fallback="Linux"),
+            "extra_context": extra_context,
         }
     }
 
     chat_agent = ChatAgent(agent_config, logging_level)
     if args.prompt:
-        # Ejecuta el agente con el prompt proporcionado y termina
+        # Run the agent with the provided prompt and exit
         chat_agent.start_chat(prompt_config, str(args.shortcuts), prompt=args.prompt)
     else:
-        # Modo interactivo por defecto
+        # Default interactive mode
         chat_agent.start_chat(prompt_config, str(args.shortcuts))

@@ -119,12 +119,17 @@ class ChatAgent:
         # Retrieve language and system information from the configuration
         language = config["configurable"].get("language", "English")
         so = config["configurable"].get("so", "Linux")
+        extra_context = config["configurable"].get("extra_context", "")
 
         # Build the system prompt
         system_prompt = [
             f"You are an expert {so} system administrator and software development assistant.",
             f"You must respond to the user in {language}."
         ]
+        if extra_context:
+            system_prompt.append(
+                "The following context is provided for this session:\n" + extra_context
+            )
 
         # Return the system prompt along with the current state messages
         return [{"role": "system", "content": "\n".join(system_prompt)}] + state["messages"]

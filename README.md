@@ -63,6 +63,27 @@ You **must** have [gcloud sdk](https://cloud.google.com/sdk/docs/install?hl=es-4
 
 [Ollama](https://ollama.com/) enables the use of local LLMs. 
 
+## Command Line Arguments
+
+The assistant can be run with different arguments to customize its behavior:
+
+- `--prompt`: Allows you to execute a direct query in non-interactive mode. The assistant will respond to the provided query and then exit. Example:
+    ```bash
+    ai-shell-assistant --prompt "What is the purpose of the os.path.join function in Python?"
+    ```
+
+- `--file`: Loads the contents of a specific file into the agent's context. The assistant will take the contents of that file into account when responding. Example:
+    ```bash
+    ai-shell-assistant --file ./src/main.py
+    ```
+
+- `--dir`: Recursively loads the contents of all files in a directory into the agent's context. Useful for queries about entire projects. Example:
+    ```bash
+    ai-shell-assistant --dir ./src/
+    ```
+
+These arguments can be combined with configuration and custom shortcuts to tailor the assistant to your needs.
+
 ## Development
 
 ```bash
@@ -121,4 +142,4 @@ Planned features and improvements for this project:
     - Use this stored information to inform future responses and actions.
     - Support explicit user commands to add, modify, or recall items from memory (e.g., "remember that I prefer X", "what did I tell you about Y?").
     The goal is to create a more personalized and context-aware user experience by enabling the assistant to build a cumulative understanding over time.
-- [ ] **Vision capabilities**: Take a screenshot and add it to the query context 
+- [ ] **Vision capabilities**: Take a screenshot and add it to the query context
