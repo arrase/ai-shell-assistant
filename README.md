@@ -10,6 +10,25 @@ This project provides an AI-powered shell assistant capable of executing shell c
 - Enhanced text output using `rich` for improved readability.
 - Web browsing capability to fetch and include online information in responses.
 
+## Command Line Arguments
+
+The assistant can be run with different arguments to customize its behavior:
+
+- `--prompt`: Allows you to execute a direct query in non-interactive mode. The assistant will respond to the provided query and then exit. Example:
+    ```bash
+    ai-shell-assistant --prompt "What is the purpose of the os.path.join function in Python?"
+    ```
+
+- `--file`: Loads the contents of a specific file into the agent's context. The assistant will take the contents of that file into account when responding. Example:
+    ```bash
+    ai-shell-assistant --file ./src/main.py
+    ```
+
+- `--dir`: Recursively loads the contents of all files in a directory into the agent's context. Useful for queries about entire projects. Example:
+    ```bash
+    ai-shell-assistant --dir ./src/
+    ```
+
 ## Shortcuts
 
 ### How Shortcuts Work
@@ -62,27 +81,6 @@ You **must** have [gcloud sdk](https://cloud.google.com/sdk/docs/install?hl=es-4
 ### Ollama
 
 [Ollama](https://ollama.com/) enables the use of local LLMs. 
-
-## Command Line Arguments
-
-The assistant can be run with different arguments to customize its behavior:
-
-- `--prompt`: Allows you to execute a direct query in non-interactive mode. The assistant will respond to the provided query and then exit. Example:
-    ```bash
-    ai-shell-assistant --prompt "What is the purpose of the os.path.join function in Python?"
-    ```
-
-- `--file`: Loads the contents of a specific file into the agent's context. The assistant will take the contents of that file into account when responding. Example:
-    ```bash
-    ai-shell-assistant --file ./src/main.py
-    ```
-
-- `--dir`: Recursively loads the contents of all files in a directory into the agent's context. Useful for queries about entire projects. Example:
-    ```bash
-    ai-shell-assistant --dir ./src/
-    ```
-
-These arguments can be combined with configuration and custom shortcuts to tailor the assistant to your needs.
 
 ## Development
 
