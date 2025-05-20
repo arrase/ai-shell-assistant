@@ -14,17 +14,17 @@ This project provides an AI-powered shell assistant capable of executing shell c
 
 The assistant can be run with different arguments to customize its behavior:
 
-- `--prompt`: Allows you to execute a direct query in non-interactive mode. The assistant will respond to the provided query and then exit. Example:
+- `--prompt`: Allows you to execute a direct query in non-interactive mode. The assistant will respond to the provided query and then exit.
     ```bash
     ai-shell-assistant --prompt "What is the purpose of the os.path.join function in Python?"
     ```
 
-- `--file`: Loads the contents of a specific file into the agent's context. The assistant will take the contents of that file into account when responding. Example:
+- `--file`: Loads the contents of a specific file into the agent's context. The assistant will take the contents of that file into account when responding.
     ```bash
     ai-shell-assistant --file ./src/main.py
     ```
 
-- `--dir`: Recursively loads the contents of all files in a directory into the agent's context. Useful for queries about entire projects. Example:
+- `--dir`: Recursively loads the contents of all files in a directory into the agent's context. Useful for queries about entire projects.
     ```bash
     ai-shell-assistant --dir ./src/
     ```
