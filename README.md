@@ -130,7 +130,6 @@ max_retries = 2
 [VERTEX]
 project = <YOUR VERTEX PROJECT HERE>
 
-
 [AISTUDIO]
 google_api_key = <YOUR GOOGLE AI STUDIO API KEY HERE>
 ```
