@@ -72,7 +72,7 @@ By defining shortcuts, users can streamline repetitive tasks and customize the a
 
 ### VertexAI
 
-You **must** have [gcloud sdk](https://cloud.google.com/sdk/docs/install?hl=es-419) configured in your terminal and a project with access to the VertexAI API. Set the project name in the config/config.ini file.
+You **must** have [gcloud sdk](https://cloud.google.com/sdk/docs/install?hl=en) configured in your terminal and a project with access to the VertexAI API. Set the project name in the config/config.ini file.
 
 ### Ollama
 
@@ -118,8 +118,8 @@ python setup.py sdist
 ```ini
 [PREFERENCES]
 mode = ollama # Values can be vertex, ollama or aistudio
-language = Spanish
-so = Linux
+language = English
+os = Linux
 logging_level = WARNING
 
 [MODEL]
