@@ -46,19 +46,21 @@ def main() -> None:
     parser.add_argument(
         "--config",
         type=pathlib.Path,
-        default=pathlib.Path.home() / ".config/ai-shell-assistant/config.ini"
+        default=pathlib.Path.home() / ".config/ai-shell-assistant/config.ini",
+        help="Path to the configuration file"
     )
     parser.add_argument(
         "--shortcuts",
         type=pathlib.Path,
-        default=pathlib.Path.home() / ".config/ai-shell-assistant/shortcuts"
+        default=pathlib.Path.home() / ".config/ai-shell-assistant/shortcuts",
+        help="Directory containing shortcut files"
     )
     parser.add_argument("--prompt", type=str, default=None)
     parser.add_argument(
         "--context",
         type=pathlib.Path,
         default=None,
-        help="Archivo o directorio a cargar en el contexto del asistente"
+        help="File or directory to load into the assistant's context"
     )
     args = parser.parse_args()
 
