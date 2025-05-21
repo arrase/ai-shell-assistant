@@ -33,6 +33,7 @@ def read_file_content(file_path: pathlib.Path) -> str:
         logging.error(f"Error reading file {str(file_path)}: {e}")
         return f"[FILE:{file_path.name}] <COULD NOT READ>"
 
+
 def read_dir_content(dir_path: pathlib.Path) -> str:
     """Recursively reads the content of all files in a directory.
 
@@ -48,6 +49,7 @@ def read_dir_content(dir_path: pathlib.Path) -> str:
         for path in dir_path.rglob("*")
         if path.is_file()
     )
+
 
 def _load_configuration(config_path: pathlib.Path) -> configparser.ConfigParser:
     """Loads the application configuration from the given path.
@@ -71,6 +73,7 @@ def _load_configuration(config_path: pathlib.Path) -> configparser.ConfigParser:
             logging.error(f"Error parsing configuration file {config_path}: {e}")
             # Return an empty config on parsing error as well
     return agent_config
+
 
 def main() -> None:
     """Main entry point for the AI Shell Assistant.
