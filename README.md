@@ -80,7 +80,11 @@ You **must** have [gcloud sdk](https://cloud.google.com/sdk/docs/install?hl=es-4
 
 ### Ollama
 
-[Ollama](https://ollama.com/) enables the use of local LLMs. 
+[Ollama](https://ollama.com/) enables the use of local LLMs.
+
+### AI Studio
+
+Google AI Studio provides access to Google's latest generative models (e.g., Gemini). You will need to obtain a Google AI Studio API key.
 
 ## Development
 
@@ -123,12 +127,16 @@ so = Linux # Tells the agent which operating system it is running on
 logging_level = WARNING
 
 [MODEL]
-name = llama3.2:1b # Only tool-calling models are supported
+name = llama3.2:1b # Only tool-calling models are supported. This is used for Ollama and VertexAI modes.
 temperature = 0.0
 max_retries = 2
 
 [VERTEX]
 project = <YOUR VERTEX PROJECT HERE>
+
+[AISTUDIO]
+model_name = gemini-pro # Or other compatible model from AI Studio
+google_api_key = YOUR_GOOGLE_AI_STUDIO_API_KEY
 ```
 
 # To-Do List

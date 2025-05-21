@@ -2,11 +2,18 @@ import readline  # Add edditline support for Unix-like systems
 import logging
 import sys
 import configparser
-from typing import Any, Dict, Optional, List, Union
+from typing import Any, Dict, Optional, List, Union, Type
 
 from langgraph.prebuilt import create_react_agent
 from langchain_google_vertexai import ChatVertexAI
 from langchain_ollama import ChatOllama
+try:
+    from langchain_google_genai import ChatGoogleGenerativeAI
+except ImportError:
+    # This allows the program to still run if the package isn't installed,
+    # and other modes (ollama, vertex) are used.
+    # The error will only occur if mode == "aistudio" is actually selected.
+    ChatGoogleGenerativeAI = None # type: ignore 
 from langgraph.checkpoint.memory import InMemorySaver # type: ignore
 from langchain_core.runnables import RunnableConfig
 from langgraph.prebuilt.chat_agent_executor import AgentState # type: ignore
@@ -102,7 +109,7 @@ class ChatAgent:
                 logging.error(f"An unexpected error occurred: {e}")
                 break
 
-    def __get_llm(self, config: configparser.ConfigParser) -> Union[ChatOllama, ChatVertexAI]:
+    def __get_llm(self, config: configparser.ConfigParser) -> Union[ChatOllama, ChatVertexAI, Type[ChatGoogleGenerativeAI]]: # type: ignore
         """Configures and returns the Language Model (LLM) based on settings.
 
         Supports 'ollama' and 'vertex' modes. Reads model name, temperature,
@@ -124,39 +131,67 @@ class ChatAgent:
             logging.error(f"Error: Missing 'mode' option in '[PREFERENCES]' section or section itself is missing. Details: {e}")
             sys.exit(1)
 
-        try:
-            model_name = config.get("MODEL", "name")
-        except (configparser.NoSectionError, configparser.NoOptionError) as e:
-            logging.error(f"Error: Missing 'name' option in '[MODEL]' section or section itself is missing. Details: {e}")
-            sys.exit(1)
-            
+        # Common model parameters - temperature and max_retries from [MODEL]
+        # Specific model_name will be fetched per mode if necessary.
         temperature = config.getfloat("MODEL", "temperature", fallback=0.0)
         max_retries = config.getint("MODEL", "max_retries", fallback=2)
 
         # Initialize the appropriate LLM based on the mode
         if mode == "ollama":
-            return ChatOllama(
-                model=model_name,
+            try:
+                ollama_model_name = config.get("MODEL", "name")
+            except (configparser.NoSectionError, configparser.NoOptionError) as e:
+                logging.error(f"Error: Missing 'name' option in '[MODEL]' section (required for Ollama mode) or section itself is missing. Details: {e}")
+                sys.exit(1)
+            return ChatOllama( # type: ignore
+                model=ollama_model_name,
                 temperature=temperature,
                 max_tokens=None,
                 max_retries=max_retries,
             )
         elif mode == "vertex":
             try:
+                vertex_model_name = config.get("MODEL", "name") # Uses the general model name from [MODEL]
+            except (configparser.NoSectionError, configparser.NoOptionError) as e:
+                logging.error(f"Error: Missing 'name' option in '[MODEL]' section (required for VertexAI mode) or section itself is missing. Details: {e}")
+                sys.exit(1)
+            try:
                 project_name = config.get("VERTEX", "project")
             except (configparser.NoSectionError, configparser.NoOptionError) as e:
                 logging.error(f"Error: Missing 'project' option in '[VERTEX]' section (required for VertexAI mode) or section itself is missing. Details: {e}")
                 sys.exit(1)
-            return ChatVertexAI(
-                model=model_name,
+            return ChatVertexAI( # type: ignore
+                model=vertex_model_name,
                 temperature=temperature,
                 max_tokens=None,
                 max_retries=max_retries,
                 project=project_name,
             )
+        elif mode == "aistudio":
+            if ChatGoogleGenerativeAI is None:
+                logging.error("Error: langchain-google-genai package is not installed. Please install it to use AI Studio mode (e.g., pip install langchain-google-genai).")
+                sys.exit(1) # This was incorrectly indented in the previous file state
+            try:
+                aistudio_specific_model_name = config.get("AISTUDIO", "model_name")
+            except (configparser.NoSectionError, configparser.NoOptionError) as e:
+                logging.error(f"Error: Missing 'model_name' option in '[AISTUDIO]' section for AI Studio mode. Details: {e}")
+                sys.exit(1)
+            try:
+                aistudio_api_key = config.get("AISTUDIO", "google_api_key")
+            except (configparser.NoSectionError, configparser.NoOptionError) as e:
+                logging.error(f"Error: Missing 'google_api_key' option in '[AISTUDIO]' section for AI Studio mode. Details: {e}")
+                sys.exit(1)
+            
+            logging.info(f"Initializing AI Studio LLM: {aistudio_specific_model_name}")
+            return ChatGoogleGenerativeAI(
+                model=aistudio_specific_model_name,
+                google_api_key=aistudio_api_key,
+                temperature=temperature, # General temperature from [MODEL]
+                max_retries=max_retries  # General max_retries from [MODEL]
+            )
         else:
             # Handle unsupported LLM mode
-            logging.error(f"Error: Unsupported LLM mode specified: {mode}. Supported modes are 'ollama' and 'vertex'.")
+            logging.error(f"Error: Unsupported LLM mode specified: '{mode}'. Supported modes are 'ollama', 'vertex', and 'aistudio'.")
             sys.exit(1)  # Terminate the program
 
     def __system_prompt(self, state: AgentState, config: RunnableConfig) -> List[BaseMessage]:

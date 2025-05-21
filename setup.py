@@ -27,8 +27,11 @@ setuptools.setup(
     install_requires=[
         "langgraph",
         "langchain-google-vertexai",
+        "langchain-google-genai", # For Google AI Studio LLMs
         "langchain-ollama",
         "langchain-community", # For ShellTool, DuckDuckGoSearchRun
+        "langchain-experimental", # For ShellTool's BashProcess
+        "duckduckgo-search", # For DuckDuckGoSearchRun tool
         "rich", # For console output
         "PyYAML", # For shortcuts
         "google-cloud-aiplatform", # For Vertex AI
