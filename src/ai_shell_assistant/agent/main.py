@@ -117,33 +117,46 @@ class ChatAgent:
         Raises:
             SystemExit: If an unsupported LLM mode is specified.
         """
-        # Retrieve LLM configuration
-        mode = config.get("PREFERENCES", "mode")
-        logging.info(f"Using LLM mode: {mode}")
+        try:
+            mode = config.get("PREFERENCES", "mode")
+            logging.info(f"Using LLM mode: {mode}")
+        except (configparser.NoSectionError, configparser.NoOptionError) as e:
+            logging.error(f"Error: Missing 'mode' option in '[PREFERENCES]' section or section itself is missing. Details: {e}")
+            sys.exit(1)
 
-        model = config.get("MODEL", "name")
+        try:
+            model_name = config.get("MODEL", "name")
+        except (configparser.NoSectionError, configparser.NoOptionError) as e:
+            logging.error(f"Error: Missing 'name' option in '[MODEL]' section or section itself is missing. Details: {e}")
+            sys.exit(1)
+            
         temperature = config.getfloat("MODEL", "temperature", fallback=0.0)
         max_retries = config.getint("MODEL", "max_retries", fallback=2)
 
         # Initialize the appropriate LLM based on the mode
         if mode == "ollama":
             return ChatOllama(
-                model=model,
+                model=model_name,
                 temperature=temperature,
                 max_tokens=None,
                 max_retries=max_retries,
             )
         elif mode == "vertex":
+            try:
+                project_name = config.get("VERTEX", "project")
+            except (configparser.NoSectionError, configparser.NoOptionError) as e:
+                logging.error(f"Error: Missing 'project' option in '[VERTEX]' section (required for VertexAI mode) or section itself is missing. Details: {e}")
+                sys.exit(1)
             return ChatVertexAI(
-                model=model,
+                model=model_name,
                 temperature=temperature,
                 max_tokens=None,
                 max_retries=max_retries,
-                project=config.get("VERTEX", "project"),
+                project=project_name,
             )
         else:
             # Handle unsupported LLM mode
-            logging.error(f"Error: Unsupported LLM mode specified: {mode}")
+            logging.error(f"Error: Unsupported LLM mode specified: {mode}. Supported modes are 'ollama' and 'vertex'.")
             sys.exit(1)  # Terminate the program
 
     def __system_prompt(self, state: AgentState, config: RunnableConfig) -> List[BaseMessage]:

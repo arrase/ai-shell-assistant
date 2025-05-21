@@ -176,7 +176,7 @@ def main() -> None:
         }
     }
 
-    chat_agent = ChatAgent(agent_config, logging_level)
+    chat_agent = ChatAgent(agent_config)
     if args.prompt:
         chat_agent.start_chat(prompt_config, str(args.shortcuts), prompt=args.prompt)
     else:
