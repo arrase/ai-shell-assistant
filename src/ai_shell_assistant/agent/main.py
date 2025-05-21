@@ -120,11 +120,11 @@ class ChatAgent:
     def __system_prompt(self, state: AgentState, config: RunnableConfig) -> List[BaseMessage]:
         c = config["configurable"]
         language = c.get("language", "English")
-        so = c.get("so", "Linux")
+        os = c.get("os", "Linux")
         extra = c.get("extra_context", "")
 
         prompt = (
-            f"You are an expert {so} system administrator and software development assistant.\n"
+            f"You are an expert {os} system administrator and software development assistant.\n"
             f"You must respond to the user in {language}."
         )
         if extra:
