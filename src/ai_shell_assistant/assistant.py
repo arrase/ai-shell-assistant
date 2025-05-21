@@ -12,7 +12,7 @@ def read_file_content(file_path: pathlib.Path) -> str:
 
     If the file is an image, it base64 encodes the content and formats it
     as a specific string. Otherwise, it reads the file as plain text.
-    Handles common file reading errors and logs them.
+    Handles file reading errors and logs them.
 
     Args:
         file_path: The path to the file to read.
@@ -23,24 +23,14 @@ def read_file_content(file_path: pathlib.Path) -> str:
     """
     mime, _ = mimetypes.guess_type(file_path)
     if mime and mime.startswith("image/"):
-        # Mypy doesn't like file_path directly in open with pathlib.Path, so convert to str
         with open(str(file_path), "rb") as f:
             encoded = base64.b64encode(f.read()).decode("utf-8")
         return f"[IMAGE:{file_path.name}:{mime}:base64]{encoded}"
     try:
         with open(file_path, "r", encoding="utf-8") as f:
             return f"[FILE:{file_path.name}]\n{f.read()}"
-    except FileNotFoundError:
-        logging.error(f"File not found: {str(file_path)}")
-        return f"[FILE:{file_path.name}] <FILE NOT FOUND>"
-    except IOError as e:
-        logging.error(f"IOError reading file {str(file_path)}: {e}")
-        return f"[FILE:{file_path.name}] <IO ERROR>"
-    except UnicodeDecodeError as e:
-        logging.error(f"UnicodeDecodeError reading file {str(file_path)}: {e}")
-        return f"[FILE:{file_path.name}] <UNICODE DECODE ERROR>"
     except Exception as e:
-        logging.error(f"An unexpected error occurred while reading file {str(file_path)}: {e}")
+        logging.error(f"Error reading file {str(file_path)}: {e}")
         return f"[FILE:{file_path.name}] <COULD NOT READ>"
 
 def read_dir_content(dir_path: pathlib.Path) -> str:
