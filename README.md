@@ -84,7 +84,7 @@ You **must** have [gcloud sdk](https://cloud.google.com/sdk/docs/install?hl=es-4
 
 ### AI Studio
 
-Google AI Studio provides access to Google's latest generative models (e.g., Gemini). You will need to obtain a Google AI Studio API key.
+[Google AI Studio](https://aistudio.google.com/) provides access to Google's latest generative models (e.g., Gemini). You will need to obtain a Google AI Studio API key.
 
 ## Development
 
