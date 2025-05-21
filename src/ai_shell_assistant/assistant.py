@@ -54,8 +54,12 @@ def main() -> None:
         default=pathlib.Path.home() / ".config/ai-shell-assistant/shortcuts"
     )
     parser.add_argument("--prompt", type=str, default=None)
-    parser.add_argument("--file", type=pathlib.Path, default=None)
-    parser.add_argument("--dir", type=pathlib.Path, default=None)
+    parser.add_argument(
+        "--context",
+        type=pathlib.Path,
+        default=None,
+        help="Archivo o directorio a cargar en el contexto del asistente"
+    )
     args = parser.parse_args()
 
     config = _load_configuration(args.config)
@@ -71,13 +75,18 @@ def main() -> None:
         return
 
     extra_context = ""
-    if args.file and args.file.exists() and args.file.is_file():
-        extra_context = read_file_content(args.file)
-    elif args.dir and args.dir.exists() and args.dir.is_dir():
-        extra_context = read_dir_content(args.dir)
-    elif args.file or args.dir:
-        logging.error(f"File or directory not found: {args.file or args.dir}")
-        return
+    if args.context:
+        if args.context.exists():
+            if args.context.is_file():
+                extra_context = read_file_content(args.context)
+            elif args.context.is_dir():
+                extra_context = read_dir_content(args.context)
+            else:
+                logging.error(f"Context path is neither a file nor a directory: {args.context}")
+                return
+        else:
+            logging.error(f"Context file or directory not found: {args.context}")
+            return
 
     prompt_config = {
         "configurable": {

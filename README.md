@@ -19,14 +19,10 @@ The assistant can be run with different arguments to customize its behavior:
     ai-shell-assistant --prompt "What is the purpose of the os.path.join function in Python?"
     ```
 
-- `--file`: Loads the contents of a specific file into the agent's context. The assistant will take the contents of that file into account when responding.
+- `--context`: Loads the contents of a specific file or recursively loads all files in a directory into the agent's context. The assistant will take the contents of that file or directory into account when responding.
     ```bash
-    ai-shell-assistant --file ./src/main.py
-    ```
-
-- `--dir`: Recursively loads the contents of all files in a directory into the agent's context. Useful for queries about entire projects.
-    ```bash
-    ai-shell-assistant --dir ./src/
+    ai-shell-assistant --context ./src/main.py
+    ai-shell-assistant --context ./src/
     ```
 
 ## Shortcuts
