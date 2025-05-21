@@ -121,22 +121,22 @@ python setup.py sdist
 
 ```ini
 [PREFERENCES]
-mode = ollama # Values can be vertex or ollama
-language = spanish
-so = Linux # Tells the agent which operating system it is running on
+mode = ollama # Values can be vertex, ollama or aistudio
+language = Spanish
+so = Linux
 logging_level = WARNING
 
 [MODEL]
-name = llama3.2:1b # Only tool-calling models are supported. This is used for Ollama and VertexAI modes.
+name = llama3.2:1b # Only tool-calling models are supported
 temperature = 0.0
 max_retries = 2
 
 [VERTEX]
 project = <YOUR VERTEX PROJECT HERE>
 
+
 [AISTUDIO]
-model_name = gemini-pro # Or other compatible model from AI Studio
-google_api_key = YOUR_GOOGLE_AI_STUDIO_API_KEY
+google_api_key = <YOUR GOOGLE AI STUDIO API KEY HERE>
 ```
 
 # To-Do List

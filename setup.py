@@ -16,8 +16,8 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
 setuptools.setup(
     name="ai-shell-assistant", # Standard practice to include the name
     version="0.1.0",
-    author="AI Shell Assistant Contributors", # Placeholder as actual author is unknown
-    author_email="placeholder@example.com", # Placeholder
+    author="Juan Ezquerro LLanes",
+    author_email="arrase@gmail.com",
     description="AI Shell Assistant powered by language models",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -35,8 +35,6 @@ setuptools.setup(
         "rich", # For console output
         "PyYAML", # For shortcuts
         "google-cloud-aiplatform", # For Vertex AI
-        # Standard library modules like mimetypes, base64, argparse, configparser, logging, pathlib, re, sys, os
-        # are not listed in install_requires.
     ],
     python_requires=">=3.9", # Based on modern library usage (e.g. langgraph, f-strings, pathlib enhancements)
     entry_points={
@@ -48,7 +46,7 @@ setuptools.setup(
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
         "Intended Audience :: System Administrators",
-        "License :: OSI Approved :: MIT License", # Assuming MIT License based on typical open-source projects
+        "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",

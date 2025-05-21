@@ -7,17 +7,11 @@ from typing import Any, Dict, Optional, List, Union, Type
 from langgraph.prebuilt import create_react_agent
 from langchain_google_vertexai import ChatVertexAI
 from langchain_ollama import ChatOllama
-try:
-    from langchain_google_genai import ChatGoogleGenerativeAI
-except ImportError:
-    # This allows the program to still run if the package isn't installed,
-    # and other modes (ollama, vertex) are used.
-    # The error will only occur if mode == "aistudio" is actually selected.
-    ChatGoogleGenerativeAI = None # type: ignore 
-from langgraph.checkpoint.memory import InMemorySaver # type: ignore
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langgraph.checkpoint.memory import InMemorySaver
 from langchain_core.runnables import RunnableConfig
-from langgraph.prebuilt.chat_agent_executor import AgentState # type: ignore
-from langchain_core.messages import AnyMessage, BaseMessage
+from langgraph.prebuilt.chat_agent_executor import AgentState
+from langchain_core.messages import BaseMessage
 from rich.console import Console
 from rich.markdown import Markdown
 from langchain_community.tools import ShellTool
@@ -119,7 +113,7 @@ class ChatAgent:
             config: The application's configuration object.
 
         Returns:
-            An instance of ChatOllama or ChatVertexAI.
+            An instance of ChatOllama, AI Studio or ChatVertexAI.
 
         Raises:
             SystemExit: If an unsupported LLM mode is specified.
@@ -168,13 +162,10 @@ class ChatAgent:
                 project=project_name,
             )
         elif mode == "aistudio":
-            if ChatGoogleGenerativeAI is None:
-                logging.error("Error: langchain-google-genai package is not installed. Please install it to use AI Studio mode (e.g., pip install langchain-google-genai).")
-                sys.exit(1) # This was incorrectly indented in the previous file state
             try:
-                aistudio_specific_model_name = config.get("AISTUDIO", "model_name")
+                aistudio_specific_model_name = config.get("MODEL", "name")
             except (configparser.NoSectionError, configparser.NoOptionError) as e:
-                logging.error(f"Error: Missing 'model_name' option in '[AISTUDIO]' section for AI Studio mode. Details: {e}")
+                logging.error(f"Error: Missing 'name' option in '[MODEL]' section (required for AI Studio mode) or section itself is missing. Details: {e}")
                 sys.exit(1)
             try:
                 aistudio_api_key = config.get("AISTUDIO", "google_api_key")
