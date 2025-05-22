@@ -17,6 +17,7 @@ from rich.markdown import Markdown
 from langchain_community.tools import ShellTool, DuckDuckGoSearchRun
 
 from .shortcuts import Shortcuts
+from .memory import SaveToMemoryTool, RetrieveFromMemoryTool, DeleteFromMemoryTool, GetAllMemoryTool, ClearAllMemoryTool
 
 
 class ChatAgent:
@@ -24,7 +25,15 @@ class ChatAgent:
         self.__console = Console()
         self.__agent = create_react_agent(
             model=self.__get_llm(config),
-            tools=[ShellTool(), DuckDuckGoSearchRun()],
+            tools=[
+                ShellTool(),
+                DuckDuckGoSearchRun(),
+                SaveToMemoryTool(),
+                RetrieveFromMemoryTool(),
+                DeleteFromMemoryTool(),
+                GetAllMemoryTool(),
+                ClearAllMemoryTool()
+            ],
             prompt=self.__system_prompt,
             checkpointer=InMemorySaver(),
         )
