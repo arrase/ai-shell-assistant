@@ -1,6 +1,2 @@
-**/.env
-**/.venv
-**/__pycache__
-**/dist
-**/build
-**/*.egg-info
+.idx/
+.vscode/
