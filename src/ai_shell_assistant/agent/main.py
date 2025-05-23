@@ -121,14 +121,11 @@ class ChatAgent:
         c = config["configurable"]
         language = c.get("language", "English")
         os = c.get("os", "Linux")
-        extra = c.get("extra_context", "")
 
         prompt = (
             f"You are an expert {os} system administrator and software development assistant.\n"
             f"You must respond to the user in {language}."
         )
-        if extra:
-            prompt += f"\n\nThe following context is provided for this session:\n{extra}"
 
         messages: List[BaseMessage] = [
             {"role": "system", "content": prompt}
