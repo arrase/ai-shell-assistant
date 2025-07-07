@@ -85,8 +85,6 @@ class ChatAgent:
             return ChatOllama(
                 model=name,
                 temperature=temperature,
-                max_tokens=None,
-                max_retries=max_retries
             )
         elif mode == "vertex":
             try:
