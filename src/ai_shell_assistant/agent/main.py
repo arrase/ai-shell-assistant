@@ -64,7 +64,7 @@ class ChatAgent:
                 logging.error(f"An unexpected error occurred: {e}")
                 break
 
-    def __get_llm(self, config: configparser.ConfigParser) -> Union[ChatOllama, ChatVertexAI, Type[ChatGoogleGenerativeAI]]:  # type: ignore
+    def __get_llm(self, config: configparser.ConfigParser) -> Union[ChatOllama, ChatVertexAI, ChatGoogleGenerativeAI]:
         try:
             mode = config.get("PREFERENCES", "mode")
             logging.info(f"Using LLM mode: {mode}")
